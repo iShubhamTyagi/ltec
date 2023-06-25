@@ -13,24 +13,28 @@ import { styled } from '@mui/system';
 
 const questions = [
   {
-    text: 'Card 1a',
-    subheading: null,
+    text: 'Frequent exacerbation',
+    subheading: 'BODE score 5-6 with',
   },
   {
-    text: 'Question 2?',
-    subheading: 'Group 1',
+    text: 'PA to aorta dia > 1',
+    subheading: 'BODE score 5-6 with',
   },
   {
-    text: 'Question 3?',
-    subheading: 'Group 1',
+    text: 'FEV 1 20-25% predicted',
+    subheading: 'BODE score 5-6 with',
   },
   {
-    text: 'Question 4?',
-    subheading: 'Group 2',
+    text: 'Increase in BODE score > 1 in 2 years',
+    subheading: 'BODE score 5-6 with',
   },
   {
     text: 'Clinical Deterioration on maximal therapy (including oxygen, NIV, rehabilitation)',
-    subheading: 'Group 2',
+    subheading: null,
+  },
+  {
+    text: 'Poor quality of Life unacceptable to patient',
+    subheading: null,
   },
 ];
 
@@ -62,9 +66,11 @@ const QuestionContainer = styled(Grid)(({ theme }) => ({
 
 function QuestionCard1a({ answers, setAnswers }) {
   const handleAnswer = (index, answer) => {
-    const updatedAnswers = [...answers];
-    updatedAnswers[index] = answer;
-    setAnswers(updatedAnswers);
+    setAnswers((prevState) => {
+      const updatedAnswers = [...prevState];
+      updatedAnswers[index] = answer;
+      return updatedAnswers;
+    });
   };
 
   const groupedQuestions = questions.reduce((groups, question, index) => {
@@ -85,7 +91,7 @@ function QuestionCard1a({ answers, setAnswers }) {
       <MainCardContent>
         <StyledBox>
           <Typography variant="h5" component="div" sx={{ marginBottom: 2, textAlign: 'left' }}>
-            General Heading
+          Is the Patient eligible for referral?
           </Typography>
           {groupedQuestions.map((group, groupIndex) => (
             <Box key={groupIndex} sx={{ marginBottom: 2 }}>
@@ -97,7 +103,7 @@ function QuestionCard1a({ answers, setAnswers }) {
               {group.questions.map((question) => (
                 <QuestionContainer container key={question.index}>
                   <Grid item xs={12} md={6}>
-                    <Typography variant="body1" component="div">
+                    <Typography variant="body1" component="div" sx={{ textAlign: 'left' }}>
                       {question.text}
                     </Typography>
                   </Grid>

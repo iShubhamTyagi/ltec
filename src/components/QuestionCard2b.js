@@ -1,27 +1,40 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, Typography, Radio, RadioGroup, FormControlLabel, Grid, Box } from '@mui/material';
+import React from 'react';
+import {
+  Card,
+  CardContent,
+  Typography,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  Grid,
+  Box,
+} from '@mui/material';
 import { styled } from '@mui/system';
 
 const questions = [
   {
-    text: "Card 2b",
+    text: 'FVC > 10%',
+    subheading: 'Pulmonary Fibrosis with past 6 months absolute decline',
+  },
+  {
+    text: 'DLCO > 10%',
+    subheading: 'Pulmonary Fibrosis with past 6 months absolute decline',
+  },
+  {
+    text: 'FVC > 5% with radiological worsening',
+    subheading: 'Pulmonary Fibrosis with past 6 months absolute decline',
+  },
+  {
+    text: '6 minute walk test SPO2 < 88% / 50 mtrs decline in 6 month',
     subheading: null,
   },
   {
-    text: "Question 2?",
-    subheading: "Group 1",
+    text: 'Pulmonary hypertension',
+    subheading: null,
   },
   {
-    text: "Question 3?",
-    subheading: "Group 1",
-  },
-  {
-    text: "Question 4?",
-    subheading: "Group 2",
-  },
-  {
-    text: "Clinical Deterioration on maximal therapy (including oxygen, NIV, rehabilitation)",
-    subheading: "Group 2",
+    text: 'Hospitalisation due to exacerbation/pneumothorax/respiratory decline',
+    subheading: null,
   },
 ];
 
@@ -51,27 +64,14 @@ const QuestionContainer = styled(Grid)(({ theme }) => ({
   paddingLeft: theme.spacing(2),
 }));
 
-function QuestionCard2b() {
-  const [answers, setAnswers] = useState(Array(questions.length).fill(null));
-  const [isMobile, setIsMobile] = useState(false);
-
-  const handleAnswer = (groupIndex, questionIndex, answer) => {
-    const updatedAnswers = [...answers];
-    const index = groupedQuestions[groupIndex].questions[questionIndex].index;
-    updatedAnswers[index] = answer;
-    setAnswers(updatedAnswers);
+function QuestionCard2b({ answers, setAnswers }) {
+  const handleAnswer = (index, answer) => {
+    setAnswers((prevState) => {
+      const updatedAnswers = [...prevState];
+      updatedAnswers[index] = answer;
+      return updatedAnswers;
+    });
   };
-
-  useEffect(() => {
-    const updateViewport = () => {
-      setIsMobile(window.innerWidth < 600); // Adjust the breakpoint as needed
-    };
-
-    window.addEventListener('resize', updateViewport);
-    updateViewport();
-
-    return () => window.removeEventListener('resize', updateViewport);
-  }, []);
 
   const groupedQuestions = questions.reduce((groups, question, index) => {
     const prevQuestion = questions[index - 1];
@@ -91,7 +91,7 @@ function QuestionCard2b() {
       <MainCardContent>
         <StyledBox>
           <Typography variant="h5" component="div" sx={{ marginBottom: 2, textAlign: 'left' }}>
-            General Heading
+          Is the Patient eligible for listing?
           </Typography>
           {groupedQuestions.map((group, groupIndex) => (
             <Box key={groupIndex} sx={{ marginBottom: 2 }}>
@@ -100,10 +100,10 @@ function QuestionCard2b() {
                   {group.subheading}
                 </StyledTypography>
               )}
-              {group.questions.map((question, questionIndex) => (
-                <QuestionContainer container key={questionIndex}>
+              {group.questions.map((question) => (
+                <QuestionContainer container key={question.index}>
                   <Grid item xs={12} md={6}>
-                    <Typography variant="body1" component="div">
+                    <Typography variant="body1" component="div" sx={{ textAlign: 'left' }}>
                       {question.text}
                     </Typography>
                   </Grid>
@@ -111,7 +111,7 @@ function QuestionCard2b() {
                     <RadioGroup
                       row
                       value={answers[question.index]}
-                      onChange={(event) => handleAnswer(groupIndex, questionIndex, event.target.value)}
+                      onChange={(event) => handleAnswer(question.index, event.target.value)}
                     >
                       <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
                       <FormControlLabel value="No" control={<Radio />} label="No" />

@@ -1,27 +1,60 @@
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, Typography, Radio, RadioGroup, FormControlLabel, Grid, Box } from '@mui/material';
+import React from 'react';
+import {
+  Card,
+  CardContent,
+  Typography,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  Grid,
+  Box,
+} from '@mui/material';
 import { styled } from '@mui/system';
 
 const questions = [
   {
-    text: "Card c2",
+    text: 'Age > 70',
     subheading: null,
   },
   {
-    text: "Question 2?",
-    subheading: "Group 1",
+    text: 'LVEF < 40%',
+    subheading: null,
   },
   {
-    text: "Question 3?",
-    subheading: "Group 1",
+    text: 'Significant CVD',
+    subheading: null,
   },
   {
-    text: "Question 4?",
-    subheading: "Group 2",
+    text: 'Severe oesophageal dismotility',
+    subheading: null,
   },
   {
-    text: "Clinical Deterioration on maximal therapy (including oxygen, NIV, rehabilitation)",
-    subheading: "Group 2",
+    text: 'Bleeding diathesis',
+    subheading: null,
+  },
+  {
+    text: 'BMI > 35 or <16',
+    subheading: null,
+  },
+  {
+    text: 'Psychiatric Condition',
+    subheading: null,
+  },
+  {
+    text: 'Infection with M abscessus, B cenocepacia, L prolificans',
+    subheading: null,
+  },
+  {
+    text: 'Hepatitis B or C',
+    subheading: null,
+  },
+  {
+    text: 'Chest wall or spinal deformity',
+    subheading: null,
+  },
+  {
+    text: 'Patient on ECMO',
+    subheading: null,
   },
 ];
 
@@ -51,27 +84,14 @@ const QuestionContainer = styled(Grid)(({ theme }) => ({
   paddingLeft: theme.spacing(2),
 }));
 
-function QuestionCardc2() {
-  const [answers, setAnswers] = useState(Array(questions.length).fill(null));
-  const [isMobile, setIsMobile] = useState(false);
-
-  const handleAnswer = (groupIndex, questionIndex, answer) => {
-    const updatedAnswers = [...answers];
-    const index = groupedQuestions[groupIndex].questions[questionIndex].index;
-    updatedAnswers[index] = answer;
-    setAnswers(updatedAnswers);
+function QuestionCardc2({ answers, setAnswers }) {
+  const handleAnswer = (index, answer) => {
+    setAnswers((prevState) => {
+      const updatedAnswers = [...prevState];
+      updatedAnswers[index] = answer;
+      return updatedAnswers;
+    });
   };
-
-  useEffect(() => {
-    const updateViewport = () => {
-      setIsMobile(window.innerWidth < 600); // Adjust the breakpoint as needed
-    };
-
-    window.addEventListener('resize', updateViewport);
-    updateViewport();
-
-    return () => window.removeEventListener('resize', updateViewport);
-  }, []);
 
   const groupedQuestions = questions.reduce((groups, question, index) => {
     const prevQuestion = questions[index - 1];
@@ -91,7 +111,7 @@ function QuestionCardc2() {
       <MainCardContent>
         <StyledBox>
           <Typography variant="h5" component="div" sx={{ marginBottom: 2, textAlign: 'left' }}>
-            General Heading
+          Contra Indication (Relative)
           </Typography>
           {groupedQuestions.map((group, groupIndex) => (
             <Box key={groupIndex} sx={{ marginBottom: 2 }}>
@@ -100,10 +120,10 @@ function QuestionCardc2() {
                   {group.subheading}
                 </StyledTypography>
               )}
-              {group.questions.map((question, questionIndex) => (
-                <QuestionContainer container key={questionIndex}>
+              {group.questions.map((question) => (
+                <QuestionContainer container key={question.index}>
                   <Grid item xs={12} md={6}>
-                    <Typography variant="body1" component="div">
+                    <Typography variant="body1" component="div" sx={{ textAlign: 'left' }}>
                       {question.text}
                     </Typography>
                   </Grid>
@@ -111,7 +131,7 @@ function QuestionCardc2() {
                     <RadioGroup
                       row
                       value={answers[question.index]}
-                      onChange={(event) => handleAnswer(groupIndex, questionIndex, event.target.value)}
+                      onChange={(event) => handleAnswer(question.index, event.target.value)}
                     >
                       <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
                       <FormControlLabel value="No" control={<Radio />} label="No" />
