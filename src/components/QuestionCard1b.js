@@ -62,11 +62,7 @@ const QuestionContainer = styled(Grid)(({ theme }) => ({
 
 function QuestionCard1b({ answers, setAnswers }) {
   const handleAnswer = (index, answer) => {
-    setAnswers((prevState) => {
-      const updatedAnswers = [...prevState];
-      updatedAnswers[index] = answer;
-      return updatedAnswers;
-    });
+    setAnswers(index, answer);
   };
 
   const groupedQuestions = questions.reduce((groups, question, index) => {
