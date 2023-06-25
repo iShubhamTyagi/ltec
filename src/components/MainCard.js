@@ -7,7 +7,18 @@ import QuestionCard3a from './QuestionCard3a';
 import QuestionCard3b from './QuestionCard3b';
 import QuestionCardc1 from './QuestionCardc1';
 import QuestionCardc2 from './QuestionCardc2';
-import { Card, CardContent, Typography, Radio, RadioGroup, FormControlLabel, Button, Grid, CircularProgress, LinearProgress } from '@mui/material';
+import {
+  Card,
+  CardContent,
+  Typography,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  Button,
+  Grid,
+  CircularProgress,
+  LinearProgress,
+} from '@mui/material';
 import { styled } from '@mui/material/styles';
 
 const MainCardContainer = styled(Card)(({ theme }) => ({
@@ -89,6 +100,7 @@ function MainCard() {
   const [selectedSequence, setSelectedSequence] = useState(null);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [userSelection, setUserSelection] = useState('');
+  const [answers, setAnswers] = useState(Array(questionCardSequences.length).fill(null));
 
   const handleSelection = (event) => {
     const sequence = Number(event.target.value);
@@ -110,10 +122,19 @@ function MainCard() {
       setSelectedSequence(null);
       setCurrentCardIndex(0);
       setUserSelection('');
+      setAnswers(Array(questionCardSequences.length).fill(null));
     }
   };
 
-  const progress = (currentCardIndex / (questionCardSequences[selectedSequence]?.cards.length || 1)) * 100;
+  const progress =
+    (currentCardIndex / (questionCardSequences[selectedSequence]?.cards.length || 1)) * 100;
+
+  const handleClear = () => {
+    setSelectedSequence(null);
+    setCurrentCardIndex(0);
+    setUserSelection('');
+    setAnswers(Array(questionCardSequences.length).fill(null));
+  };
 
   return (
     <MainCardContainer>
@@ -133,7 +154,12 @@ function MainCard() {
             </MainCardTitle>
             <RadioGroupContainer row onChange={handleSelection}>
               {questionCardSequences.map((sequence, index) => (
-                <FormControlLabel key={index} value={index.toString()} control={<Radio />} label={sequence.label} />
+                <FormControlLabel
+                  key={index}
+                  value={index.toString()}
+                  control={<Radio />}
+                  label={sequence.label}
+                />
               ))}
             </RadioGroupContainer>
           </>
@@ -141,16 +167,21 @@ function MainCard() {
           <>
             {questionCardSequences[selectedSequence].cards.map((card, index) => (
               <div key={index} style={{ display: index === currentCardIndex - 1 ? 'block' : 'none' }}>
-                {card}
+                {React.cloneElement(card, { answers, setAnswers })} {/* Pass answers and setAnswers as props */}
               </div>
             ))}
             <ButtonsContainer container spacing={2}>
-              <Grid item xs={6} sm={3}>
+              <Grid item xs={4} sm={2}>
+                <Button variant="contained" color="secondary" onClick={handleClear}>
+                  Clear
+                </Button>
+              </Grid>
+              <Grid item xs={4} sm={2}>
                 <Button variant="contained" color="primary" onClick={handlePrevious}>
                   Previous
                 </Button>
               </Grid>
-              <Grid item xs={6} sm={3}>
+              <Grid item xs={4} sm={2}>
                 <Button variant="contained" color="primary" onClick={handleNext}>
                   Next
                 </Button>
