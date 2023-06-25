@@ -96,33 +96,48 @@ const questionCardSequences = [
   },
 ];
 
+const initialState = {
+  selectedSequence: null,
+  currentCardIndex: 0,
+  userSelection: '',
+  answers: Array(questionCardSequences.length).fill(null),
+};
+
 function MainCard() {
-  const [selectedSequence, setSelectedSequence] = useState(null);
-  const [currentCardIndex, setCurrentCardIndex] = useState(0);
-  const [userSelection, setUserSelection] = useState('');
-  const [answers, setAnswers] = useState(Array(questionCardSequences.length).fill(null));
+  const [state, setState] = useState(initialState);
+
+  const { selectedSequence, currentCardIndex, userSelection, answers } = state;
 
   const handleSelection = (event) => {
     const sequence = Number(event.target.value);
-    setSelectedSequence(sequence);
-    setCurrentCardIndex(1);
-    setUserSelection(questionCardSequences[sequence].label);
+    setState((prevState) => ({
+      ...prevState,
+      selectedSequence: sequence,
+      currentCardIndex: 1,
+      userSelection: questionCardSequences[sequence].label,
+    }));
   };
 
   const handleNext = () => {
-    if (selectedSequence !== null && currentCardIndex < questionCardSequences[selectedSequence].cards.length) {
-      setCurrentCardIndex(currentCardIndex + 1);
+    if (
+      selectedSequence !== null &&
+      currentCardIndex < questionCardSequences[selectedSequence].cards.length
+    ) {
+      setState((prevState) => ({
+        ...prevState,
+        currentCardIndex: prevState.currentCardIndex + 1,
+      }));
     }
   };
 
   const handlePrevious = () => {
     if (currentCardIndex > 1) {
-      setCurrentCardIndex(currentCardIndex - 1);
+      setState((prevState) => ({
+        ...prevState,
+        currentCardIndex: prevState.currentCardIndex - 1,
+      }));
     } else if (currentCardIndex === 1) {
-      setSelectedSequence(null);
-      setCurrentCardIndex(0);
-      setUserSelection('');
-      setAnswers(Array(questionCardSequences.length).fill(null));
+      setState(initialState);
     }
   };
 
@@ -130,10 +145,7 @@ function MainCard() {
     (currentCardIndex / (questionCardSequences[selectedSequence]?.cards.length || 1)) * 100;
 
   const handleClear = () => {
-    setSelectedSequence(null);
-    setCurrentCardIndex(0);
-    setUserSelection('');
-    setAnswers(Array(questionCardSequences.length).fill(null));
+    setState(initialState);
   };
 
   return (
@@ -167,7 +179,7 @@ function MainCard() {
           <>
             {questionCardSequences[selectedSequence].cards.map((card, index) => (
               <div key={index} style={{ display: index === currentCardIndex - 1 ? 'block' : 'none' }}>
-                {React.cloneElement(card, { answers, setAnswers })} {/* Pass answers and setAnswers as props */}
+                {React.cloneElement(card, { answers, setAnswers: setState })} {/* Pass answers and setAnswers as props */}
               </div>
             ))}
             <ButtonsContainer container spacing={2}>
