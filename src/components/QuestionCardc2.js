@@ -86,13 +86,8 @@ const QuestionContainer = styled(Grid)(({ theme }) => ({
 
 function QuestionCardc2({ answers, setAnswers }) {
   const handleAnswer = (index, answer) => {
-    setAnswers((prevState) => {
-      const updatedAnswers = [...prevState];
-      updatedAnswers[index] = answer;
-      return updatedAnswers;
-    });
+    setAnswers(index, answer);
   };
-
   const groupedQuestions = questions.reduce((groups, question, index) => {
     const prevQuestion = questions[index - 1];
     const currentGroup = groups[groups.length - 1];
@@ -111,7 +106,7 @@ function QuestionCardc2({ answers, setAnswers }) {
       <MainCardContent>
         <StyledBox>
           <Typography variant="h5" component="div" sx={{ marginBottom: 2, textAlign: 'left' }}>
-          Contra Indication (Relative)
+            Is the Patient eligible for referral?
           </Typography>
           {groupedQuestions.map((group, groupIndex) => (
             <Box key={groupIndex} sx={{ marginBottom: 2 }}>

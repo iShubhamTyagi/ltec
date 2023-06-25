@@ -65,12 +65,9 @@ const QuestionContainer = styled(Grid)(({ theme }) => ({
 }));
 
 function QuestionCard1a({ answers, setAnswers }) {
+  
   const handleAnswer = (index, answer) => {
-    setAnswers((prevState) => {
-      const updatedAnswers = [...prevState];
-      updatedAnswers[index] = answer;
-      return updatedAnswers;
-    });
+    setAnswers(index, answer);
   };
 
   const groupedQuestions = questions.reduce((groups, question, index) => {
@@ -91,7 +88,7 @@ function QuestionCard1a({ answers, setAnswers }) {
       <MainCardContent>
         <StyledBox>
           <Typography variant="h5" component="div" sx={{ marginBottom: 2, textAlign: 'left' }}>
-          Is the Patient eligible for referral?
+            Is the Patient eligible for referral?
           </Typography>
           {groupedQuestions.map((group, groupIndex) => (
             <Box key={groupIndex} sx={{ marginBottom: 2 }}>
@@ -110,7 +107,7 @@ function QuestionCard1a({ answers, setAnswers }) {
                   <Grid item xs={12} md={6} sx={{ display: 'flex', justifyContent: 'flex-start' }}>
                     <RadioGroup
                       row
-                      value={answers[question.index]}
+                      value={answers[question.index]} // Updated line
                       onChange={(event) => handleAnswer(question.index, event.target.value)}
                     >
                       <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
@@ -123,7 +120,7 @@ function QuestionCard1a({ answers, setAnswers }) {
           ))}
         </StyledBox>
       </MainCardContent>
-      <Box sx={{ flexGrow: 1 }}></Box> {/* Fill the remaining space */}
+      <Box sx={{ flexGrow: 1 }}></Box>
     </MainCardContainer>
   );
 }

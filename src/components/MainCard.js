@@ -65,7 +65,8 @@ const RadioGroupContainer = styled(RadioGroup)({
 });
 
 const ButtonsContainer = styled(Grid)({
-  marginTop: '24px',
+  marginTop: 'auto', // Move the buttons to the bottom
+  justifyContent: 'center',
 });
 
 const ProgressContainerOuter = styled(Grid)({
@@ -100,7 +101,7 @@ const initialState = {
   selectedSequence: null,
   currentCardIndex: 0,
   userSelection: '',
-  answers: Array(questionCardSequences.length).fill(null),
+  answers: Array(questionCardSequences.reduce((total, sequence) => total + sequence.cards.length, 0)).fill(null),
 };
 
 function MainCard() {
@@ -148,6 +149,14 @@ function MainCard() {
     setState(initialState);
   };
 
+  const setAnswers = (index, answer) => {
+    setState((prevState) => {
+      const updatedAnswers = [...prevState.answers];
+      updatedAnswers[index + currentCardIndex - 1] = answer;
+      return { ...prevState, answers: updatedAnswers };
+    });
+  };
+
   return (
     <MainCardContainer>
       <ProgressContainer>
@@ -179,7 +188,7 @@ function MainCard() {
           <>
             {questionCardSequences[selectedSequence].cards.map((card, index) => (
               <div key={index} style={{ display: index === currentCardIndex - 1 ? 'block' : 'none' }}>
-                {React.cloneElement(card, { answers, setAnswers: setState })} {/* Pass answers and setAnswers as props */}
+                {React.cloneElement(card, { answers, setAnswers, currentCardIndex: index + 1 })}
               </div>
             ))}
             <ButtonsContainer container spacing={2}>
