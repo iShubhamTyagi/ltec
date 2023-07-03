@@ -12,7 +12,7 @@ import {
   LinearProgress,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import questionCardSequences from './QuestionCardSequences';
+import questionCardSequences from "./QuestionCardSequences";
 
 const MainCardContainer = styled(Card)(({ theme }) => ({
   margin: theme.spacing(2),
@@ -178,7 +178,7 @@ function MainCard() {
                   {React.cloneElement(card, {
                     answers,
                     setAnswers,
-                    currentCardIndex: index + 1,
+                    currentCardIndex,
                   })}
                 </div>
               )
