@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Card,
   CardContent,
@@ -8,65 +8,65 @@ import {
   FormControlLabel,
   Grid,
   Box,
-} from '@mui/material';
-import { styled } from '@mui/system';
+} from "@mui/material";
+import { styled } from "@mui/system";
 
 const questions = [
   {
-    text: 'Unwilling Patient',
+    text: "Unwilling Patient",
     subheading: null,
   },
   {
-    text: 'Active malignancy',
+    text: "Active malignancy",
     subheading: null,
   },
   {
-    text: 'GFR < 40 or acute renal failure',
+    text: "GFR < 40 or acute renal failure",
     subheading: null,
   },
   {
-    text: 'Chronic liver disease or acute liver failure',
+    text: "Chronic liver disease or acute liver failure",
     subheading: null,
   },
   {
-    text: 'ACS/Stroke/MI in last 30 days',
+    text: "ACS/Stroke/MI in last 30 days",
     subheading: null,
   },
   {
-    text: 'Disseminated infection (including TB)/Septic shock)',
+    text: "Disseminated infection (including TB)/Septic shock)",
     subheading: null,
   },
   {
-    text: 'Active HIV',
+    text: "Active HIV",
     subheading: null,
   },
   {
-    text: 'Non Ambulatory Patient',
+    text: "Non Ambulatory Patient",
     subheading: null,
   },
   {
-    text: 'Progressive Cognitive Impairment',
+    text: "Progressive Cognitive Impairment",
     subheading: null,
   },
   {
-    text: 'Non adherence to treatment',
+    text: "Non adherence to treatment",
     subheading: null,
   },
   {
-    text: 'Active substance abuse',
+    text: "Active substance abuse",
     subheading: null,
   },
 ];
 
 const MainCardContainer = styled(Card)(({ theme }) => ({
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
+  height: "100%",
+  display: "flex",
+  flexDirection: "column",
 }));
 
 const MainCardContent = styled(CardContent)({
-  flex: '1 1 auto',
-  overflow: 'auto',
+  flex: "1 1 auto",
+  overflow: "auto",
   padding: 0,
 });
 
@@ -76,17 +76,20 @@ const StyledBox = styled(Box)(({ theme }) => ({
 
 const StyledTypography = styled(Typography)(({ theme }) => ({
   marginBottom: theme.spacing(1),
-  fontWeight: 'bold',
+  fontWeight: "bold",
 }));
 
 const QuestionContainer = styled(Grid)(({ theme }) => ({
-  alignItems: 'center',
+  alignItems: "center",
   paddingLeft: theme.spacing(2),
 }));
 
-function QuestionCardc1({ answers, setAnswers }) {
-  const handleAnswer = (index, answer) => {
-    setAnswers(index, answer);
+function QuestionCardc1({ answers, setAnswers, currentCardIndex }) {
+  const handleAnswer = (questionIndex, answer) => {
+    // Calculate a unique index for the question
+    const uniqueIndex =
+      (currentCardIndex - 1) * questions.length + questionIndex;
+    setAnswers(uniqueIndex, answer);
   };
 
   const groupedQuestions = questions.reduce((groups, question, index) => {
@@ -96,7 +99,10 @@ function QuestionCardc1({ answers, setAnswers }) {
     if (prevQuestion && prevQuestion.subheading === question.subheading) {
       currentGroup.questions.push({ ...question, index });
     } else {
-      groups.push({ subheading: question.subheading, questions: [{ ...question, index }] });
+      groups.push({
+        subheading: question.subheading,
+        questions: [{ ...question, index }],
+      });
     }
 
     return groups;
@@ -106,31 +112,58 @@ function QuestionCardc1({ answers, setAnswers }) {
     <MainCardContainer>
       <MainCardContent>
         <StyledBox>
-          <Typography variant="h5" component="div" sx={{ marginBottom: 2, textAlign: 'left' }}>
-          Contra Indication (Absolute)
+          <Typography
+            variant="h5"
+            component="div"
+            sx={{ marginBottom: 2, textAlign: "left" }}
+          >
+            Contra Indication (Absolute)
           </Typography>
           {groupedQuestions.map((group, groupIndex) => (
             <Box key={groupIndex} sx={{ marginBottom: 2 }}>
               {group.subheading && (
-                <StyledTypography variant="subtitle1" component="div" sx={{ textAlign: 'left' }}>
+                <StyledTypography
+                  variant="subtitle1"
+                  component="div"
+                  sx={{ textAlign: "left" }}
+                >
                   {group.subheading}
                 </StyledTypography>
               )}
               {group.questions.map((question) => (
                 <QuestionContainer container key={question.index}>
                   <Grid item xs={12} md={6}>
-                    <Typography variant="body1" component="div" sx={{ textAlign: 'left' }}>
+                    <Typography
+                      variant="body1"
+                      component="div"
+                      sx={{ textAlign: "left" }}
+                    >
                       {question.text}
                     </Typography>
                   </Grid>
-                  <Grid item xs={12} md={6} sx={{ display: 'flex', justifyContent: 'flex-start' }}>
+                  <Grid
+                    item
+                    xs={12}
+                    md={6}
+                    sx={{ display: "flex", justifyContent: "flex-start" }}
+                  >
                     <RadioGroup
                       row
-                      value={answers[question.index]}
-                      onChange={(event) => handleAnswer(question.index, event.target.value)}
+                      value={answers[`${currentCardIndex}-${question.index}`]} // Use the unique key to get the answer
+                      onChange={(event) =>
+                        handleAnswer(question.index, event.target.value)
+                      }
                     >
-                      <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
-                      <FormControlLabel value="No" control={<Radio />} label="No" />
+                      <FormControlLabel
+                        value="Yes"
+                        control={<Radio />}
+                        label="Yes"
+                      />
+                      <FormControlLabel
+                        value="No"
+                        control={<Radio />}
+                        label="No"
+                      />
                     </RadioGroup>
                   </Grid>
                 </QuestionContainer>

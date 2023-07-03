@@ -101,7 +101,7 @@ const initialState = {
   selectedSequence: null,
   currentCardIndex: 0,
   userSelection: '',
-  answers: Array(questionCardSequences.reduce((total, sequence) => total + sequence.cards.length, 0)).fill(null),
+  answers: {},
 };
 
 function MainCard() {
@@ -151,8 +151,9 @@ function MainCard() {
 
   const setAnswers = (index, answer) => {
     setState((prevState) => {
-      const updatedAnswers = [...prevState.answers];
-      updatedAnswers[index + currentCardIndex - 1] = answer;
+      const updatedAnswers = { ...prevState.answers };
+      const key = `${currentCardIndex}-${index}`; // Create a unique key
+      updatedAnswers[key] = answer;
       return { ...prevState, answers: updatedAnswers };
     });
   };
@@ -188,7 +189,7 @@ function MainCard() {
           <>
             {questionCardSequences[selectedSequence].cards.map((card, index) => (
               <div key={index} style={{ display: index === currentCardIndex - 1 ? 'block' : 'none' }}>
-                {React.cloneElement(card, { answers, setAnswers, currentCardIndex: index + 1 })}
+                {React.cloneElement(card, { answers, setAnswers, currentCardIndex })}
               </div>
             ))}
             <ButtonsContainer container spacing={2}>
