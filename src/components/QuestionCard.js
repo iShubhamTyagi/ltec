@@ -1,7 +1,5 @@
 import React from 'react';
 import {
-  Card,
-  CardContent,
   Typography,
   Radio,
   RadioGroup,
@@ -9,35 +7,13 @@ import {
   Grid,
   Box,
 } from '@mui/material';
-import { styled } from '@mui/system';
+import { QuestionCardContainer, QuestionContainer, QuestionCardContent, StyledBox, StyledTypography } from './StyledComponents';
 
-const MainCardContainer = styled(Card)(({ theme }) => ({
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-}));
 
-const MainCardContent = styled(CardContent)({
-  flex: '1 1 auto',
-  overflow: 'auto',
-  padding: 0,
-});
-
-const StyledBox = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(2),
-}));
-
-const StyledTypography = styled(Typography)(({ theme }) => ({
-  marginBottom: theme.spacing(1),
-  fontWeight: 'bold',
-}));
-
-const QuestionContainer = styled(Grid)(({ theme }) => ({
-  alignItems: 'center',
-  paddingLeft: theme.spacing(2),
-}));
 
 function QuestionCard({ questions, answers, setAnswers, currentCardIndex, title }) {
+  
+  
   const handleAnswer = (questionIndex, answer) => {
     const uniqueIndex = `${currentCardIndex}-${questionIndex}`;
     setAnswers(uniqueIndex, answer);
@@ -57,8 +33,8 @@ function QuestionCard({ questions, answers, setAnswers, currentCardIndex, title 
   }, []);
 
   return (
-    <MainCardContainer>
-      <MainCardContent>
+    <QuestionCardContainer>
+      <QuestionCardContent>
         <StyledBox>
           <Typography variant="h5" component="div" sx={{ marginBottom: 2, textAlign: 'left' }}>
             {title}
@@ -92,9 +68,9 @@ function QuestionCard({ questions, answers, setAnswers, currentCardIndex, title 
             </Box>
           ))}
         </StyledBox>
-      </MainCardContent>
+      </QuestionCardContent>
       <Box sx={{ flexGrow: 1 }}></Box>
-    </MainCardContainer>
+    </QuestionCardContainer>
   );
 }
 

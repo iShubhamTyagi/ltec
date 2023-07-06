@@ -1,101 +1,50 @@
 import React, { useState } from "react";
 import {
-  Card,
-  CardContent,
-  Typography,
   Radio,
-  RadioGroup,
   FormControlLabel,
-  Button,
-  Grid,
   CircularProgress,
-  LinearProgress,
+  TextField,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
+  Grid,
 } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import {
+  MainCardContainer,
+  ProgressContainer,
+  MainCardContent,
+  UserSelection,
+  MainCardTitle,
+  RadioGroupContainer,
+  ButtonsContainerOuter,
+} from "./StyledComponents";
+
 import questionCardSequences from "./QuestionCardSequences";
-
-const MainCardContainer = styled(Card)(({ theme }) => ({
-  margin: theme.spacing(2),
-  boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
-  position: "relative",
-  overflow: "hidden",
-  height: "100vh", // Set container height to fill the available vertical space
-}));
-
-const ProgressContainer = styled("div")(({ theme }) => ({
-  position: "absolute",
-  top: theme.spacing(1),
-  right: theme.spacing(1),
-}));
-
-const MainCardContent = styled(CardContent)(({ theme }) => ({
-  display: "flex",
-  flexDirection: "column",
-  alignItems: "center",
-  padding: theme.spacing(3),
-  position: "relative",
-  overflow: "auto",
-  maxHeight: "calc(100% - 70px)", // Adjust the max height based on your layout
-  height: "100%", // Utilize the available vertical space
-
-  [theme.breakpoints.up("sm")]: {
-    padding: theme.spacing(6),
-  },
-}));
-
-const MainCardTitle = styled(Typography)(({ theme }) => ({
-  fontSize: theme.typography.pxToRem(20),
-  marginBottom: theme.spacing(2),
-
-  [theme.breakpoints.up("sm")]: {
-    fontSize: theme.typography.pxToRem(24),
-  },
-}));
-
-const RadioGroupContainer = styled(RadioGroup)({
-  display: "flex",
-  flexDirection: "column",
-});
-
-const ButtonsContainer = styled(Grid)({
-  marginTop: "auto", // Move the buttons to the bottom
-  justifyContent: "center",
-});
-
-const ProgressContainerOuter = styled(Grid)({
-  marginTop: "12px",
-  width: "100%",
-});
-
-const UserSelection = styled(Typography)(({ theme }) => ({
-  position: "sticky",
-  top: 0,
-  background: theme.palette.background.paper,
-  padding: theme.spacing(2),
-  zIndex: 1,
-}));
+import Buttons from "./Buttons";
 
 const initialState = {
   selectedSequence: null,
   currentCardIndex: 0,
   userSelection: "",
   answers: {},
+  age: "",
+  id: "",
+  sex: "",
 };
 
 function MainCard() {
   const [state, setState] = useState(initialState);
 
-  const { selectedSequence, currentCardIndex, userSelection, answers } = state;
-
-  const handleSelection = (event) => {
-    const sequence = Number(event.target.value);
-    setState((prevState) => ({
-      ...prevState,
-      selectedSequence: sequence,
-      currentCardIndex: 1,
-      userSelection: questionCardSequences[sequence].label,
-    }));
-  };
+  const {
+    selectedSequence,
+    currentCardIndex,
+    userSelection,
+    answers,
+    age,
+    id,
+    sex,
+  } = state;
 
   const handleNext = () => {
     if (
@@ -120,13 +69,39 @@ function MainCard() {
     }
   };
 
-  const progress =
-    (currentCardIndex /
-      (questionCardSequences[selectedSequence]?.cards.length || 1)) *
-    100;
-
   const handleClear = () => {
     setState(initialState);
+  };
+
+  const handleSelection = (event) => {
+    const sequence = Number(event.target.value);
+    setState((prevState) => ({
+      ...prevState,
+      selectedSequence: sequence,
+      currentCardIndex: 1,
+      userSelection: questionCardSequences[sequence].label,
+    }));
+  };
+
+  const handleAgeChange = (event) => {
+    setState((prevState) => ({
+      ...prevState,
+      age: event.target.value,
+    }));
+  };
+
+  const handleIdChange = (event) => {
+    setState((prevState) => ({
+      ...prevState,
+      id: event.target.value,
+    }));
+  };
+
+  const handleSexChange = (event) => {
+    setState((prevState) => ({
+      ...prevState,
+      sex: event.target.value,
+    }));
   };
 
   const setAnswers = (index, answer) => {
@@ -137,6 +112,13 @@ function MainCard() {
       return { ...prevState, answers: updatedAnswers };
     });
   };
+
+  const progress =
+    (currentCardIndex /
+      (questionCardSequences[selectedSequence]?.cards.length || 1)) *
+    100;
+
+  const isFormValid = age && id && sex;
 
   return (
     <MainCardContainer>
@@ -151,6 +133,34 @@ function MainCard() {
         )}
         {selectedSequence === null ? (
           <>
+            <Grid>
+              <div style={{ marginBottom: "16px" }}>
+                <TextField
+                  label="Age"
+                  value={age}
+                  onChange={handleAgeChange}
+                  style={{ marginBottom: "8px" }}
+                />
+              </div>
+              <div style={{ marginBottom: "16px" }}>
+                <TextField
+                  label="ID"
+                  value={id}
+                  onChange={handleIdChange}
+                  style={{ marginBottom: "8px" }}
+                />
+              </div>
+              <div style={{ marginBottom: "16px" }}>
+                <FormControl style={{ width: "170px" }}>
+                  <InputLabel>Sex</InputLabel>
+                  <Select value={sex} onChange={handleSexChange}>
+                    <MenuItem value="Male">Male</MenuItem>
+                    <MenuItem value="Female">Female</MenuItem>
+                    <MenuItem value="Other">Other</MenuItem>
+                  </Select>
+                </FormControl>
+              </div>
+            </Grid>
             <MainCardTitle variant="h6" component="div">
               Choose the Patient Disease:
             </MainCardTitle>
@@ -159,7 +169,7 @@ function MainCard() {
                 <FormControlLabel
                   key={index}
                   value={index.toString()}
-                  control={<Radio />}
+                  control={<Radio disabled={!isFormValid} />}
                   label={sequence.label}
                 />
               ))}
@@ -183,41 +193,16 @@ function MainCard() {
                 </div>
               )
             )}
-            <ButtonsContainer container spacing={2}>
-              <Grid item xs={4} sm={2}>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  onClick={handleClear}
-                >
-                  Clear
-                </Button>
-              </Grid>
-              <Grid item xs={4} sm={2}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handlePrevious}
-                >
-                  Previous
-                </Button>
-              </Grid>
-              <Grid item xs={4} sm={2}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleNext}
-                >
-                  Next
-                </Button>
-              </Grid>
-            </ButtonsContainer>
           </>
         )}
       </MainCardContent>
-      <ProgressContainerOuter>
-        <LinearProgress variant="determinate" value={progress} />
-      </ProgressContainerOuter>
+      <ButtonsContainerOuter>
+        <Buttons
+          handleClear={handleClear}
+          handlePrevious={handlePrevious}
+          handleNext={handleNext}
+        />
+      </ButtonsContainerOuter>
     </MainCardContainer>
   );
 }
