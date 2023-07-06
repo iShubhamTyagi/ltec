@@ -1,36 +1,37 @@
 import React from 'react';
+import Typography from '@mui/material/Typography';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
 import {
-  Typography,
-  Radio,
-  RadioGroup,
-  FormControlLabel,
-  Grid,
-  Box,
-} from '@mui/material';
-import { QuestionCardContainer, QuestionContainer, QuestionCardContent, StyledBox, StyledTypography } from './StyledComponents';
-
-
+  QuestionCardContainer,
+  QuestionContainer,
+  QuestionCardContent,
+  StyledBox,
+  StyledTypography
+} from './StyledComponents';
 
 function QuestionCard({ questions, answers, setAnswers, currentCardIndex, title }) {
-  
-  
   const handleAnswer = (questionIndex, answer) => {
     const uniqueIndex = `${currentCardIndex}-${questionIndex}`;
     setAnswers(uniqueIndex, answer);
   };
 
-  const groupedQuestions = questions.reduce((groups, question, index) => {
-    const prevQuestion = questions[index - 1];
-    const currentGroup = groups[groups.length - 1];
+  const questionGroups = [];
+
+  for (let i = 0; i < questions.length; i++) {
+    const question = questions[i];
+    const prevQuestion = questions[i - 1];
+    const currentGroup = questionGroups[questionGroups.length - 1];
 
     if (prevQuestion && prevQuestion.subheading === question.subheading) {
-      currentGroup.questions.push({ ...question, index });
+      currentGroup.questions.push({ ...question, index: i });
     } else {
-      groups.push({ subheading: question.subheading, questions: [{ ...question, index }] });
+      questionGroups.push({ subheading: question.subheading, questions: [{ ...question, index: i }] });
     }
-
-    return groups;
-  }, []);
+  }
 
   return (
     <QuestionCardContainer>
@@ -39,15 +40,15 @@ function QuestionCard({ questions, answers, setAnswers, currentCardIndex, title 
           <Typography variant="h5" component="div" sx={{ marginBottom: 2, textAlign: 'left' }}>
             {title}
           </Typography>
-          {groupedQuestions.map((group, groupIndex) => (
+          {questionGroups.map((group, groupIndex) => (
             <Box key={groupIndex} sx={{ marginBottom: 2 }}>
-              {group.subheading && (
+              {group.subheading &&(
                 <StyledTypography variant="subtitle1" component="div" sx={{ textAlign: 'left' }}>
                   {group.subheading}
                 </StyledTypography>
               )}
               {group.questions.map((question) => (
-                <QuestionContainer container key={question.index}>
+                <QuestionContainer key={question.index}>
                   <Grid item xs={12} md={6}>
                     <Typography variant="body1" component="div" sx={{ textAlign: 'left' }}>
                       {question.text}

@@ -19,7 +19,6 @@ import {
   RadioGroupContainer,
   ButtonsContainerOuter,
 } from "./StyledComponents";
-
 import questionCardSequences from "./QuestionCardSequences";
 import Buttons from "./Buttons";
 
@@ -49,7 +48,7 @@ function MainCard() {
   const handleNext = () => {
     if (
       selectedSequence !== null &&
-      currentCardIndex < questionCardSequences[selectedSequence].cards.length
+      currentCardIndex < questionCardSequences[selectedSequence]?.cards.length
     ) {
       setState((prevState) => ({
         ...prevState,
@@ -83,24 +82,11 @@ function MainCard() {
     }));
   };
 
-  const handleAgeChange = (event) => {
+  const handleInputChange = (event, field) => {
+    const value = event.target.value;
     setState((prevState) => ({
       ...prevState,
-      age: event.target.value,
-    }));
-  };
-
-  const handleIdChange = (event) => {
-    setState((prevState) => ({
-      ...prevState,
-      id: event.target.value,
-    }));
-  };
-
-  const handleSexChange = (event) => {
-    setState((prevState) => ({
-      ...prevState,
-      sex: event.target.value,
+      [field]: value,
     }));
   };
 
@@ -138,7 +124,7 @@ function MainCard() {
                 <TextField
                   label="Age"
                   value={age}
-                  onChange={handleAgeChange}
+                  onChange={(event) => handleInputChange(event, "age")}
                   style={{ marginBottom: "8px" }}
                 />
               </div>
@@ -146,14 +132,14 @@ function MainCard() {
                 <TextField
                   label="ID"
                   value={id}
-                  onChange={handleIdChange}
+                  onChange={(event) => handleInputChange(event, "id")}
                   style={{ marginBottom: "8px" }}
                 />
               </div>
               <div style={{ marginBottom: "16px" }}>
                 <FormControl style={{ width: "170px" }}>
                   <InputLabel>Sex</InputLabel>
-                  <Select value={sex} onChange={handleSexChange}>
+                  <Select value={sex} onChange={(event) => handleInputChange(event, "sex")}>
                     <MenuItem value="Male">Male</MenuItem>
                     <MenuItem value="Female">Female</MenuItem>
                     <MenuItem value="Other">Other</MenuItem>

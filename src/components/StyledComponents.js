@@ -1,6 +1,7 @@
 import { styled } from "@mui/material/styles";
 import { Card, CardContent, Typography, RadioGroup, Grid, Box } from "@mui/material";
 
+// Styled components for MainCard component
 export const MainCardContainer = styled(Card)(({ theme }) => ({
     margin: "auto", // Center horizontally
     marginTop: "5%", // Adjust the top margin as desired
@@ -80,7 +81,7 @@ export const MainCardContainer = styled(Card)(({ theme }) => ({
   });
 
 
-  /////////////
+// Styled components for QuestionCard component
   
   export const UserSelection = styled(Typography)(({ theme }) => ({
     position: "sticky",
