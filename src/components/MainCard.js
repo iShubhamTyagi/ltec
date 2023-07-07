@@ -21,6 +21,7 @@ import {
 } from "./StyledComponents";
 import questionCardSequences from "./QuestionCardSequences";
 import Buttons from "./Buttons";
+import ValidationComponent from "./ValidationComponent";
 
 const initialState = {
   selectedSequence: null,
@@ -95,6 +96,7 @@ function MainCard() {
       const updatedAnswers = { ...prevState.answers };
       const key = `${currentCardIndex}-${index}`; // Create a unique key
       updatedAnswers[key] = answer;
+
       return { ...prevState, answers: updatedAnswers };
     });
   };
@@ -139,7 +141,10 @@ function MainCard() {
               <div style={{ marginBottom: "16px" }}>
                 <FormControl style={{ width: "170px" }}>
                   <InputLabel>Sex</InputLabel>
-                  <Select value={sex} onChange={(event) => handleInputChange(event, "sex")}>
+                  <Select
+                    value={sex}
+                    onChange={(event) => handleInputChange(event, "sex")}
+                  >
                     <MenuItem value="Male">Male</MenuItem>
                     <MenuItem value="Female">Female</MenuItem>
                     <MenuItem value="Other">Other</MenuItem>
@@ -189,6 +194,13 @@ function MainCard() {
           handleNext={handleNext}
         />
       </ButtonsContainerOuter>
+      <ValidationComponent
+        answers={answers}
+        questions={
+          questionCardSequences[selectedSequence]?.cards[currentCardIndex - 1]
+            ?.questions
+        }
+      />
     </MainCardContainer>
   );
 }
