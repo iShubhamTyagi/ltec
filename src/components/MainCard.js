@@ -53,7 +53,7 @@ function MainCard() {
   const handleNext = () => {
     if (
       selectedSequence !== null &&
-      currentCardIndex < questionCardSequences[selectedSequence]?.cards.length
+      currentCardIndex <= questionCardSequences[selectedSequence]?.cards.length
     ) {
       setState((prevState) => ({
         ...prevState,
@@ -61,6 +61,8 @@ function MainCard() {
       }));
     }
   };
+  
+  
 
   const handlePrevious = () => {
     if (currentCardIndex > 1) {
@@ -118,11 +120,12 @@ function MainCard() {
   useEffect(()=> {console.log(verdicts)},[verdicts]);
   useEffect(() => {
     if (
-      currentCardIndex >= questionCardSequences[selectedSequence]?.cards.length
+      currentCardIndex > questionCardSequences[selectedSequence]?.cards.length
     ) {
       setIsFinalCardShown(true);
     }
   }, [currentCardIndex, selectedSequence]);
+  
   
   
 
