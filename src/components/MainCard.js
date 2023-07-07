@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Radio,
   FormControlLabel,
@@ -22,6 +22,7 @@ import {
 import questionCardSequences from "./QuestionCardSequences";
 import Buttons from "./Buttons";
 import ValidationComponent from "./ValidationComponent";
+import FinalCard from "./FinalCard";
 
 const initialState = {
   selectedSequence: null,
@@ -36,12 +37,14 @@ const initialState = {
 
 function MainCard() {
   const [state, setState] = useState(initialState);
+  const [isFinalCardShown, setIsFinalCardShown] = useState(false);
 
   const {
     selectedSequence,
     currentCardIndex,
     userSelection,
     answers,
+    verdicts,
     age,
     id,
     sex,
@@ -103,14 +106,25 @@ function MainCard() {
   };
 
   const setVerdict = (cardIndex, verdict) => {
-    setState(prevState => ({
+    setState((prevState) => ({
       ...prevState,
-      verdicts: { 
-        ...prevState.verdicts, 
-        [cardIndex]: verdict
-      }
+      verdicts: {
+        ...prevState.verdicts,
+        [cardIndex]: verdict,
+      },
     }));
   };
+
+  useEffect(()=> {console.log(verdicts)},[verdicts]);
+  useEffect(() => {
+    if (
+      currentCardIndex >= questionCardSequences[selectedSequence]?.cards.length
+    ) {
+      setIsFinalCardShown(true);
+    }
+  }, [currentCardIndex, selectedSequence]);
+  
+  
 
   const progress =
     (currentCardIndex /
@@ -118,6 +132,18 @@ function MainCard() {
     100;
 
   const isFormValid = age && id && sex;
+
+  if (isFinalCardShown) {
+    return (
+      <FinalCard
+        handleClear={handleClear}
+        age={age}
+        id={id}
+        sex={sex}
+        verdicts={verdicts}
+      />
+    );
+  }
 
   return (
     <MainCardContainer>

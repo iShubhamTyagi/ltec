@@ -1,4 +1,4 @@
-import React from "react";
+import {React, useEffect} from "react";
 import Typography from "@mui/material/Typography";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
@@ -45,9 +45,10 @@ function QuestionCard({
   );
 
   const getCardVerdict = () => {
-    const hasYesAnswer = questionGroups.some(group =>
+    const hasYesAnswer = questionGroups.some((group) =>
       group.questions.some(
-        question => answers[`${currentCardIndex}-${question.index}`] === "Yes"
+        (question) =>
+          answers[`${currentCardIndex}-${question.index}`] === "Yes"
       )
     );
 
@@ -55,20 +56,31 @@ function QuestionCard({
   };
 
   const handleAnswer = (questionIndex, answer) => {
+    const updatedAnswers = {
+      ...answers,
+      [`${currentCardIndex}-${questionIndex}`]: answer,
+    };
+  
     setAnswers(questionIndex, answer);
-
+  
     const isCardComplete = questionGroups.every((group) =>
       group.questions.every((question) =>
-        answers.hasOwnProperty(`${currentCardIndex}-${question.index}`)
+        updatedAnswers.hasOwnProperty(`${currentCardIndex}-${question.index}`)
       )
     );
-
-    // Set the verdict only when a card is completed
+  
     if (isCardComplete) {
       const verdict = getCardVerdict();
       setVerdict(currentCardIndex, verdict);
     }
   };
+
+  useEffect(() => {
+    if (isCardComplete) {
+      const verdict = getCardVerdict();
+      setVerdict(currentCardIndex, verdict);
+    }
+  }, [isCardComplete, currentCardIndex]);
 
   return (
     <QuestionCardContainer>
