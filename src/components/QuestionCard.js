@@ -17,13 +17,10 @@ function QuestionCard({
   questions,
   answers,
   setAnswers,
+  setVerdict,
   currentCardIndex,
   title,
 }) {
-  const handleAnswer = (questionIndex, answer) => {
-    setAnswers(questionIndex, answer);
-  };
-
   const questionGroups = [];
 
   for (let i = 0; i < questions.length; i++) {
@@ -48,13 +45,29 @@ function QuestionCard({
   );
 
   const getCardVerdict = () => {
-    const hasYesAnswer = questionGroups.some((group) =>
+    const hasYesAnswer = questionGroups.some(group =>
       group.questions.some(
-        (question) => answers[`${currentCardIndex}-${question.index}`] === "Yes"
+        question => answers[`${currentCardIndex}-${question.index}`] === "Yes"
       )
     );
 
     return hasYesAnswer ? "Eligible" : "Ineligible";
+  };
+
+  const handleAnswer = (questionIndex, answer) => {
+    setAnswers(questionIndex, answer);
+
+    const isCardComplete = questionGroups.every((group) =>
+      group.questions.every((question) =>
+        answers.hasOwnProperty(`${currentCardIndex}-${question.index}`)
+      )
+    );
+
+    // Set the verdict only when a card is completed
+    if (isCardComplete) {
+      const verdict = getCardVerdict();
+      setVerdict(currentCardIndex, verdict);
+    }
   };
 
   return (

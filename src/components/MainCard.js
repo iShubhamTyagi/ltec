@@ -28,6 +28,7 @@ const initialState = {
   currentCardIndex: 0,
   userSelection: "",
   answers: {},
+  verdicts: {}, // to store verdicts
   age: "",
   id: "",
   sex: "",
@@ -99,6 +100,16 @@ function MainCard() {
 
       return { ...prevState, answers: updatedAnswers };
     });
+  };
+
+  const setVerdict = (cardIndex, verdict) => {
+    setState(prevState => ({
+      ...prevState,
+      verdicts: { 
+        ...prevState.verdicts, 
+        [cardIndex]: verdict
+      }
+    }));
   };
 
   const progress =
@@ -179,6 +190,7 @@ function MainCard() {
                   {React.cloneElement(card, {
                     answers,
                     setAnswers,
+                    setVerdict,
                     currentCardIndex,
                   })}
                 </div>
