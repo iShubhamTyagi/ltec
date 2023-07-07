@@ -21,7 +21,6 @@ import {
 } from "./StyledComponents";
 import questionCardSequences from "./QuestionCardSequences";
 import Buttons from "./Buttons";
-import ValidationComponent from "./ValidationComponent";
 import FinalCard from "./FinalCard";
 
 const initialState = {
@@ -38,6 +37,7 @@ const initialState = {
 function MainCard() {
   const [state, setState] = useState(initialState);
   const [isFinalCardShown, setIsFinalCardShown] = useState(false);
+  const [currentVerdicts, setCurrentVerdicts] = useState({});
 
   const {
     selectedSequence,
@@ -61,8 +61,6 @@ function MainCard() {
       }));
     }
   };
-  
-  
 
   const handlePrevious = () => {
     if (currentCardIndex > 1) {
@@ -116,19 +114,27 @@ function MainCard() {
         [cardIndex]: verdict,
       },
     }));
+
+    setCurrentVerdicts((prevVerdicts) => ({
+      ...prevVerdicts,
+      [cardIndex]: verdict,
+    }));
   };
 
-  useEffect(()=> {console.log(verdicts)},[verdicts]);
+  useEffect(() => {
+    console.log(verdicts);
+  }, [verdicts]);
   useEffect(() => {
     if (
       currentCardIndex > questionCardSequences[selectedSequence]?.cards.length
     ) {
       setIsFinalCardShown(true);
     }
-  }, [currentCardIndex, selectedSequence]);
-  
-  
-  
+  }, [currentCardIndex, selectedSequence, answers]);
+
+  useEffect(() => {
+    setCurrentVerdicts(verdicts);
+  }, [verdicts]);
 
   const progress =
     (currentCardIndex /
@@ -144,7 +150,7 @@ function MainCard() {
         age={age}
         id={id}
         sex={sex}
-        verdicts={verdicts}
+        verdicts={currentVerdicts}
       />
     );
   }
@@ -236,13 +242,6 @@ function MainCard() {
           handleNext={handleNext}
         />
       </ButtonsContainerOuter>
-      <ValidationComponent
-        answers={answers}
-        questions={
-          questionCardSequences[selectedSequence]?.cards[currentCardIndex - 1]
-            ?.questions
-        }
-      />
     </MainCardContainer>
   );
 }

@@ -1,4 +1,4 @@
-import {React, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import Typography from "@mui/material/Typography";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
@@ -21,22 +21,23 @@ function QuestionCard({
   currentCardIndex,
   title,
 }) {
-  const questionGroups = [];
+  const [localVerdict, setLocalVerdict] = useState("");
 
-  for (let i = 0; i < questions.length; i++) {
-    const question = questions[i];
-    const prevQuestion = questions[i - 1];
-    const currentGroup = questionGroups[questionGroups.length - 1];
+  const questionGroups = questions.reduce((groups, question, index) => {
+    const prevQuestion = questions[index - 1];
+    const currentGroup = groups[groups.length - 1];
 
     if (prevQuestion && prevQuestion.subheading === question.subheading) {
-      currentGroup.questions.push({ ...question, index: i });
+      currentGroup.questions.push({ ...question, index });
     } else {
-      questionGroups.push({
+      groups.push({
         subheading: question.subheading,
-        questions: [{ ...question, index: i }],
+        questions: [{ ...question, index }],
       });
     }
-  }
+
+    return groups;
+  }, []);
 
   const isCardComplete = questionGroups.every((group) =>
     group.questions.every((question) =>
@@ -47,12 +48,13 @@ function QuestionCard({
   const getCardVerdict = () => {
     const hasYesAnswer = questionGroups.some((group) =>
       group.questions.some(
-        (question) =>
-          answers[`${currentCardIndex}-${question.index}`] === "Yes"
+        (question) => answers[`${currentCardIndex}-${question.index}`] === "Yes"
       )
     );
 
-    return hasYesAnswer ? "Eligible" : "Ineligible";
+    const cardVerdict = hasYesAnswer ? "Eligible" : "Ineligible";
+    setLocalVerdict(cardVerdict);
+    setVerdict(currentCardIndex, cardVerdict);
   };
 
   const handleAnswer = (questionIndex, answer) => {
@@ -60,27 +62,13 @@ function QuestionCard({
       ...answers,
       [`${currentCardIndex}-${questionIndex}`]: answer,
     };
-  
+
     setAnswers(questionIndex, answer);
-  
-    const isCardComplete = questionGroups.every((group) =>
-      group.questions.every((question) =>
-        updatedAnswers.hasOwnProperty(`${currentCardIndex}-${question.index}`)
-      )
-    );
-  
-    if (isCardComplete) {
-      const verdict = getCardVerdict();
-      setVerdict(currentCardIndex, verdict);
-    }
   };
 
   useEffect(() => {
-    if (isCardComplete) {
-      const verdict = getCardVerdict();
-      setVerdict(currentCardIndex, verdict);
-    }
-  }, [isCardComplete, currentCardIndex]);
+    getCardVerdict();
+  }, [isCardComplete, currentCardIndex, answers]);
 
   return (
     <QuestionCardContainer>
@@ -130,16 +118,14 @@ function QuestionCard({
                         handleAnswer(question.index, event.target.value)
                       }
                     >
-                      <FormControlLabel
-                        value="Yes"
-                        control={<Radio />}
-                        label="Yes"
-                      />
-                      <FormControlLabel
-                        value="No"
-                        control={<Radio />}
-                        label="No"
-                      />
+                      {["Yes", "No", "n.a."].map((option) => (
+                        <FormControlLabel
+                          key={option}
+                          value={option}
+                          control={<Radio />}
+                          label={option}
+                        />
+                      ))}
                     </RadioGroup>
                   </Grid>
                 </QuestionContainer>
@@ -152,7 +138,7 @@ function QuestionCard({
               component="div"
               sx={{ textAlign: "left", marginTop: 2 }}
             >
-              Verdict: {getCardVerdict()}
+              Verdict: {localVerdict}
             </Typography>
           )}
         </StyledBox>
