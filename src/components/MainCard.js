@@ -77,6 +77,7 @@ function MainCard() {
 
   const handleClear = () => {
     setState(initialState);
+    setIsFinalCardShown(false);
   };
 
   const handleSelection = (event) => {

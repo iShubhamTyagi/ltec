@@ -1,10 +1,11 @@
 import React from "react";
 import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button"; // Import the Button component
 import { MainCardContainer, MainCardContent } from "./StyledComponents";
 
 function FinalCard({ handleClear, age, id, sex, verdicts }) {
   const isVerdictsAvailable = verdicts && Object.keys(verdicts).length > 0;
-  
+
   return (
     <MainCardContainer>
       <MainCardContent>
@@ -32,6 +33,10 @@ function FinalCard({ handleClear, age, id, sex, verdicts }) {
             </ul>
           </Typography>
         )}
+        {/* Add a clear button */}
+        <Button variant="outlined" color="primary" onClick={handleClear}>
+          Start Again
+        </Button>
       </MainCardContent>
     </MainCardContainer>
   );
