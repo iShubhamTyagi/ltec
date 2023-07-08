@@ -22,6 +22,7 @@ function QuestionCard({
   title,
 }) {
   const [localVerdict, setLocalVerdict] = useState("");
+  const [isCardComplete, setIsCardComplete] = useState(false);
 
   const questionGroups = questions.reduce((groups, question, index) => {
     const prevQuestion = questions[index - 1];
@@ -38,12 +39,6 @@ function QuestionCard({
 
     return groups;
   }, []);
-
-  const isCardComplete = questionGroups.every((group) =>
-    group.questions.every((question) =>
-      answers.hasOwnProperty(`${currentCardIndex}-${question.index}`)
-    )
-  );
 
   const getCardVerdict = () => {
     const hasYesAnswer = questionGroups.some((group) =>
@@ -67,8 +62,18 @@ function QuestionCard({
   };
 
   useEffect(() => {
+    setIsCardComplete(
+      questionGroups.every((group) =>
+        group.questions.every((question) =>
+          answers.hasOwnProperty(`${currentCardIndex}-${question.index}`)
+        )
+      )
+    );
+  }, [answers, currentCardIndex, questionGroups]);
+
+  useEffect(() => {
     getCardVerdict();
-  }, [isCardComplete, currentCardIndex, answers]);
+  }, [answers, currentCardIndex]);
 
   return (
     <QuestionCardContainer>

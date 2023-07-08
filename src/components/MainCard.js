@@ -124,6 +124,7 @@ function MainCard() {
   useEffect(() => {
     console.log(verdicts);
   }, [verdicts]);
+
   useEffect(() => {
     if (
       currentCardIndex > questionCardSequences[selectedSequence]?.cards.length

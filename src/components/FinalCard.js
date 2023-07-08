@@ -27,7 +27,7 @@ function FinalCard({ handleClear, age, id, sex, verdicts }) {
             <ul>
               {Object.entries(verdicts).map(([cardIndex, verdict]) => (
                 <li key={cardIndex}>
-                  Card {Number(cardIndex) + 1}: {verdict}
+                  {verdict}
                 </li>
               ))}
             </ul>
