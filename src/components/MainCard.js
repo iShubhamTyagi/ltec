@@ -22,6 +22,8 @@ import {
 import questionCardSequences from "./QuestionCardSequences";
 import Buttons from "./Buttons";
 import FinalCard from "./FinalCard";
+import Header from "./Header";
+import Footer from "./Footer";
 
 const initialState = {
   selectedSequence: null,
@@ -146,104 +148,112 @@ function MainCard() {
 
   if (isFinalCardShown) {
     return (
-      <FinalCard
-        handleClear={handleClear}
-        age={age}
-        id={id}
-        sex={sex}
-        verdicts={currentVerdicts}
-      />
+      <>
+        <Header />
+        <FinalCard
+          handleClear={handleClear}
+          age={age}
+          id={id}
+          sex={sex}
+          verdicts={currentVerdicts}
+        />
+        <Footer />
+      </>
     );
   }
 
   return (
-    <MainCardContainer>
-      <ProgressContainer>
-        <CircularProgress variant="determinate" value={progress} />
-      </ProgressContainer>
-      <MainCardContent>
-        {userSelection && (
-          <UserSelection variant="body1" component="div">
-            {userSelection}
-          </UserSelection>
-        )}
-        {selectedSequence === null ? (
-          <>
-            <Grid>
-              <div style={{ marginBottom: "16px" }}>
-                <TextField
-                  label="Age"
-                  value={age}
-                  onChange={(event) => handleInputChange(event, "age")}
-                  style={{ marginBottom: "8px" }}
-                />
-              </div>
-              <div style={{ marginBottom: "16px" }}>
-                <TextField
-                  label="ID"
-                  value={id}
-                  onChange={(event) => handleInputChange(event, "id")}
-                  style={{ marginBottom: "8px" }}
-                />
-              </div>
-              <div style={{ marginBottom: "16px" }}>
-                <FormControl style={{ width: "170px" }}>
-                  <InputLabel>Sex</InputLabel>
-                  <Select
-                    value={sex}
-                    onChange={(event) => handleInputChange(event, "sex")}
-                  >
-                    <MenuItem value="Male">Male</MenuItem>
-                    <MenuItem value="Female">Female</MenuItem>
-                    <MenuItem value="Other">Other</MenuItem>
-                  </Select>
-                </FormControl>
-              </div>
-            </Grid>
-            <MainCardTitle variant="h6" component="div">
-              Choose the Patient Disease:
-            </MainCardTitle>
-            <RadioGroupContainer row onChange={handleSelection}>
-              {questionCardSequences.map((sequence, index) => (
-                <FormControlLabel
-                  key={index}
-                  value={index.toString()}
-                  control={<Radio disabled={!isFormValid} />}
-                  label={sequence.label}
-                />
-              ))}
-            </RadioGroupContainer>
-          </>
-        ) : (
-          <>
-            {questionCardSequences[selectedSequence].cards.map(
-              (card, index) => (
-                <div
-                  key={index}
-                  style={{
-                    display: index === currentCardIndex - 1 ? "block" : "none",
-                  }}
-                >
-                  {React.cloneElement(card, {
-                    answers,
-                    setAnswers,
-                    setVerdict,
-                    currentCardIndex,
-                  })}
+    <>
+      <Header />
+      <MainCardContainer>
+        <ProgressContainer>
+          <CircularProgress variant="determinate" value={progress} />
+        </ProgressContainer>
+        <MainCardContent>
+          {userSelection && (
+            <UserSelection variant="body1" component="div">
+              {userSelection}
+            </UserSelection>
+          )}
+          {selectedSequence === null ? (
+            <>
+              <Grid>
+                <div style={{ marginBottom: "16px" }}>
+                  <TextField
+                    label="Age"
+                    value={age}
+                    onChange={(event) => handleInputChange(event, "age")}
+                    style={{ marginBottom: "8px" }}
+                  />
                 </div>
-              )
-            )}
-          </>
-        )}
-      </MainCardContent>
-      <ButtonsContainerOuter>
-        <Buttons
-          handleClear={handleClear}
-          handlePrevious={handlePrevious}
-          handleNext={handleNext}
+                <div style={{ marginBottom: "16px" }}>
+                  <TextField
+                    label="ID"
+                    value={id}
+                    onChange={(event) => handleInputChange(event, "id")}
+                    style={{ marginBottom: "8px" }}
+                  />
+                </div>
+                <div style={{ marginBottom: "16px" }}>
+                  <FormControl style={{ width: "170px" }}>
+                    <InputLabel>Sex</InputLabel>
+                    <Select
+                      value={sex}
+                      onChange={(event) => handleInputChange(event, "sex")}
+                    >
+                      <MenuItem value="Male">Male</MenuItem>
+                      <MenuItem value="Female">Female</MenuItem>
+                      <MenuItem value="Other">Other</MenuItem>
+                    </Select>
+                  </FormControl>
+                </div>
+              </Grid>
+              <MainCardTitle variant="h6" component="div">
+                Choose the Patient Disease:
+              </MainCardTitle>
+              <RadioGroupContainer row onChange={handleSelection}>
+                {questionCardSequences.map((sequence, index) => (
+                  <FormControlLabel
+                    key={index}
+                    value={index.toString()}
+                    control={<Radio disabled={!isFormValid} />}
+                    label={sequence.label}
+                  />
+                ))}
+              </RadioGroupContainer>
+            </>
+          ) : (
+            <>
+              {questionCardSequences[selectedSequence].cards.map(
+                (card, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      display: index === currentCardIndex - 1 ? "block" : "none",
+                    }}
+                  >
+                    {React.cloneElement(card, {
+                      answers,
+                      setAnswers,
+                      setVerdict,
+                      currentCardIndex,
+                    })}
+                  </div>
+                )
+              )}
+            </>
+          )}
+        </MainCardContent>
+        <ButtonsContainerOuter>
+          <Buttons
+            handleClear={handleClear}
+            handlePrevious={handlePrevious}
+            handleNext={handleNext}
         />
-      </ButtonsContainerOuter>
-    </MainCardContainer>
+        </ButtonsContainerOuter>
+      </MainCardContainer>
+      <Footer />
+    </>
   );
 }
 
