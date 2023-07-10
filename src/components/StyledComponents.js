@@ -4,8 +4,8 @@ import { Card, CardContent, Typography, RadioGroup, Grid, Box } from "@mui/mater
 // Styled components for MainCard component
 export const MainCardContainer = styled(Card)(({ theme }) => ({
     margin: "auto", // Center horizontally
-    marginTop: "5%", // Adjust the top margin as desired
-    marginBottom: "5%", // Adjust the bottom margin as desired
+    marginTop: "1%", // Adjust the top margin as desired
+    marginBottom: "2%", // Adjust the bottom margin as desired
     boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
     position: "relative",
     overflow: "hidden",
@@ -48,7 +48,7 @@ export const MainCardContainer = styled(Card)(({ theme }) => ({
 
   export const MainCardTitle = styled(Typography)(({ theme }) => ({
     fontSize: theme.typography.pxToRem(20),
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(1),
   
     [theme.breakpoints.up("sm")]: {
       fontSize: theme.typography.pxToRem(24),
@@ -76,7 +76,7 @@ export const MainCardContainer = styled(Card)(({ theme }) => ({
     background: "#fff",
     zIndex: 1,
     marginTop: "auto", // Move the buttons to the bottom
-    marginBottom: "10%", // Add a 10% margin below the buttons
+    marginBottom: "2%", // Add a 10% margin below the buttons
     justifyContent: "center",
   });
 
