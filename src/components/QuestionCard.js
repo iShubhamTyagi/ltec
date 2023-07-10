@@ -7,6 +7,7 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import {
   QuestionCardContainer,
+  QuestionContainer,
   QuestionCardContent,
   StyledBox,
   StyledTypography,
@@ -23,9 +24,27 @@ function QuestionCard({
   const [localVerdict, setLocalVerdict] = useState("");
   const [isCardComplete, setIsCardComplete] = useState(false);
 
+  const questionGroups = questions.reduce((groups, question, index) => {
+    const prevQuestion = questions[index - 1];
+    const currentGroup = groups[groups.length - 1];
+
+    if (prevQuestion && prevQuestion.subheading === question.subheading) {
+      currentGroup.questions.push({ ...question, index });
+    } else {
+      groups.push({
+        subheading: question.subheading,
+        questions: [{ ...question, index }],
+      });
+    }
+
+    return groups;
+  }, []);
+
   const getCardVerdict = () => {
-    const hasYesAnswer = questions.some((question) =>
-      answers[`${currentCardIndex}-${question.index}`] === "Yes"
+    const hasYesAnswer = questionGroups.some((group) =>
+      group.questions.some(
+        (question) => answers[`${currentCardIndex}-${question.index}`] === "Yes"
+      )
     );
 
     const cardVerdict = hasYesAnswer ? "Eligible" : "Ineligible";
@@ -44,11 +63,13 @@ function QuestionCard({
 
   useEffect(() => {
     setIsCardComplete(
-      questions.every((question) =>
-        answers.hasOwnProperty(`${currentCardIndex}-${question.index}`)
+      questionGroups.every((group) =>
+        group.questions.every((question) =>
+          answers.hasOwnProperty(`${currentCardIndex}-${question.index}`)
+        )
       )
     );
-  }, [answers, currentCardIndex, questions]);
+  }, [answers, currentCardIndex, questionGroups]);
 
   useEffect(() => {
     getCardVerdict();
@@ -65,42 +86,55 @@ function QuestionCard({
           >
             {title}
           </Typography>
-          {questions.map((question) => (
-            <Box key={question.index} sx={{ marginBottom: 2 }}>
-              <Grid container>
-                <Grid item xs={12} md={6}>
-                  <Typography
-                    variant="body1"
-                    component="div"
-                    sx={{ textAlign: "left" }}
-                  >
-                    {question.text}
-                  </Typography>
-                </Grid>
-                <Grid
-                  item
-                  xs={12}
-                  md={6}
-                  sx={{ display: "flex", justifyContent: "flex-start" }}
+          {questionGroups.map((group, groupIndex) => (
+            <Box key={groupIndex} sx={{ marginBottom: 2 }}>
+              {group.subheading && (
+                <StyledTypography
+                  variant="subtitle1"
+                  component="div"
+                  sx={{ textAlign: "left" }}
                 >
-                  <RadioGroup
-                    row
-                    value={answers[`${currentCardIndex}-${question.index}`] || ""}
-                    onChange={(event) =>
-                      handleAnswer(question.index, event.target.value)
-                    }
+                  {group.subheading}
+                </StyledTypography>
+              )}
+              {group.questions.map((question) => (
+                <QuestionContainer key={question.index}>
+                  <Grid item xs={12} md={6}>
+                    <Typography
+                      variant="body1"
+                      component="div"
+                      sx={{ textAlign: "left" }}
+                    >
+                      {question.text}
+                    </Typography>
+                  </Grid>
+                  <Grid
+                    item
+                    xs={12}
+                    md={6}
+                    sx={{ display: "flex", justifyContent: "flex-start" }}
                   >
-                    {["Yes", "No", "n.a."].map((option) => (
-                      <FormControlLabel
-                        key={option}
-                        value={option}
-                        control={<Radio />}
-                        label={option}
-                      />
-                    ))}
-                  </RadioGroup>
-                </Grid>
-              </Grid>
+                    <RadioGroup
+                      row
+                      value={
+                        answers[`${currentCardIndex}-${question.index}`] || ""
+                      }
+                      onChange={(event) =>
+                        handleAnswer(question.index, event.target.value)
+                      }
+                    >
+                      {["Yes", "No", "n.a."].map((option) => (
+                        <FormControlLabel
+                          key={option}
+                          value={option}
+                          control={<Radio />}
+                          label={option}
+                        />
+                      ))}
+                    </RadioGroup>
+                  </Grid>
+                </QuestionContainer>
+              ))}
             </Box>
           ))}
           {isCardComplete && (
@@ -114,6 +148,7 @@ function QuestionCard({
           )}
         </StyledBox>
       </QuestionCardContent>
+      <Box sx={{ flexGrow: 1 }}></Box>
     </QuestionCardContainer>
   );
 }
