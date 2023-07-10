@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
   Radio,
   FormControlLabel,
+  CircularProgress,
   TextField,
   Select,
   MenuItem,
@@ -11,6 +12,7 @@ import {
 } from "@mui/material";
 import {
   MainCardContainer,
+  ProgressContainer,
   MainCardContent,
   UserSelection,
   MainCardTitle,
@@ -137,19 +139,17 @@ function MainCard() {
     setCurrentVerdicts(verdicts);
   }, [verdicts]);
 
-  let progress = 0;
-
-  if (selectedSequence !== null) {
-    const totalCards = questionCardSequences[selectedSequence]?.cards.length || 1;
-    progress = currentCardIndex > totalCards ? 100 : ((currentCardIndex - 1) / totalCards) * 100;
-  }
+  const progress =
+    (currentCardIndex /
+      (questionCardSequences[selectedSequence]?.cards.length || 1)) *
+    100;
 
   const isFormValid = age && id && sex;
 
   if (isFinalCardShown) {
     return (
       <>
-       <Header progress={progress} />
+        <Header />
         <FinalCard
           handleClear={handleClear}
           age={age}
@@ -164,8 +164,11 @@ function MainCard() {
 
   return (
     <>
-      <Header progress={progress} />
+      <Header />
       <MainCardContainer>
+        <ProgressContainer>
+          <CircularProgress variant="determinate" value={progress} />
+        </ProgressContainer>
         <MainCardContent>
           {userSelection && (
             <UserSelection variant="body1" component="div">
