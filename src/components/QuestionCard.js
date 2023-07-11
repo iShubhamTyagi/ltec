@@ -53,11 +53,6 @@ function QuestionCard({
   };
 
   const handleAnswer = (questionIndex, answer) => {
-    const updatedAnswers = {
-      ...answers,
-      [`${currentCardIndex}-${questionIndex}`]: answer,
-    };
-
     setAnswers(questionIndex, answer);
   };
 
