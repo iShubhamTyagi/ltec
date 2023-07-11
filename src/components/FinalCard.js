@@ -41,3 +41,4 @@ function FinalCard({ handleClear, age, id, sex, verdicts }) {
 }
 
 export default FinalCard;
+
