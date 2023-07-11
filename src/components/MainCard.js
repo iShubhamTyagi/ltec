@@ -1,29 +1,38 @@
 import React, { useState, useEffect } from "react";
 import {
-  Radio,
-  FormControlLabel,
-  CircularProgress,
-  TextField,
-  Select,
-  MenuItem,
-  InputLabel,
-  FormControl,
+  Card,
+  CardContent,
+  Typography,
+  RadioGroup,
   Grid,
+  Box,
+  AppBar,
+  Toolbar,
+  CircularProgress,
 } from "@mui/material";
 import {
-  MainCardContainer,
-  ProgressContainer,
-  MainCardContent,
-  UserSelection,
-  MainCardTitle,
-  RadioGroupContainer,
-  ButtonsContainerOuter,
-} from "./StyledComponents";
+  TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@mui/material";
+import { FormControlLabel, Radio } from "@mui/material";
+
 import questionCardSequences from "./QuestionCardSequences";
 import Buttons from "./Buttons";
 import FinalCard from "./FinalCard";
 import Header from "./Header";
 import Footer from "./Footer";
+
+import {
+  MainCardContainer,
+  ProgressContainer,
+  MainCardContent,
+  MainCardTitle,
+  RadioGroupContainer,
+  ButtonsContainerOuter,
+} from "./StyledComponents";
 
 const initialState = {
   selectedSequence: null,
@@ -149,7 +158,7 @@ function MainCard() {
   if (isFinalCardShown) {
     return (
       <>
-        <Header />
+        <Header userSelection={userSelection} progress={progress} />
         <FinalCard
           handleClear={handleClear}
           age={age}
@@ -164,17 +173,9 @@ function MainCard() {
 
   return (
     <>
-      <Header />
+      <Header userSelection={userSelection} progress={progress} />
       <MainCardContainer>
-        <ProgressContainer>
-          <CircularProgress variant="determinate" value={progress} />
-        </ProgressContainer>
         <MainCardContent>
-          {userSelection && (
-            <UserSelection variant="body1" component="div">
-              {userSelection}
-            </UserSelection>
-          )}
           {selectedSequence === null ? (
             <>
               <Grid>
@@ -229,7 +230,8 @@ function MainCard() {
                   <div
                     key={index}
                     style={{
-                      display: index === currentCardIndex - 1 ? "block" : "none",
+                      display:
+                        index === currentCardIndex - 1 ? "block" : "none",
                     }}
                   >
                     {React.cloneElement(card, {
@@ -249,7 +251,7 @@ function MainCard() {
             handleClear={handleClear}
             handlePrevious={handlePrevious}
             handleNext={handleNext}
-        />
+          />
         </ButtonsContainerOuter>
       </MainCardContainer>
       <Footer />

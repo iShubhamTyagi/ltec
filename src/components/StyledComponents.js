@@ -35,14 +35,14 @@ export const MainCardContainer = styled(Card)(({ theme }) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    padding: theme.spacing(3),
+    padding: theme.spacing(1),
     position: "relative",
     overflow: "auto",
     maxHeight: "calc(100% - 70px)", // Adjust the max height based on your layout
     height: "100%", // Utilize the available vertical space
   
     [theme.breakpoints.up("sm")]: {
-      padding: theme.spacing(6),
+      padding: theme.spacing(1),
     },
   }));
 
@@ -76,7 +76,7 @@ export const MainCardContainer = styled(Card)(({ theme }) => ({
     background: "#fff",
     zIndex: 1,
     marginTop: "auto", // Move the buttons to the bottom
-    marginBottom: "2%", // Add a 10% margin below the buttons
+    marginBottom: "2%",
     justifyContent: "center",
   });
 
