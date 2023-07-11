@@ -66,9 +66,10 @@ function QuestionCard({
     );
   }, [answers, currentCardIndex, questionGroups]);
 
-// eslint-disable-next-line react-hooks/exhaustive-deps
+
   useEffect(() => {
     getCardVerdict();
+// eslint-disable-next-line react-hooks/exhaustive-deps
   }, [answers, currentCardIndex]);
 
   return (
