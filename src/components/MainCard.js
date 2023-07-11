@@ -1,15 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Card,
-  CardContent,
-  Typography,
-  RadioGroup,
-  Grid,
-  Box,
-  AppBar,
-  Toolbar,
-  CircularProgress,
-} from "@mui/material";
+import { Grid } from "@mui/material";
 import {
   TextField,
   FormControl,
@@ -27,7 +17,6 @@ import Footer from "./Footer";
 
 import {
   MainCardContainer,
-  ProgressContainer,
   MainCardContent,
   MainCardTitle,
   RadioGroupContainer,
