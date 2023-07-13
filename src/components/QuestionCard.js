@@ -73,6 +73,7 @@ function QuestionCard({
 
   useEffect(() => {
     getCardVerdict();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [answersOnCurrentCard, currentCardIndex]);
 
   return (
