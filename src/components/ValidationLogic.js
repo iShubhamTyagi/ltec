@@ -1,4 +1,3 @@
-import React from "react";
 
 function ValidationLogic({ questionCardIndex, answers }) {
   let isEligible = false;
