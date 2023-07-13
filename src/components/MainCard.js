@@ -28,7 +28,7 @@ const initialState = {
   currentCardIndex: 0,
   userSelection: "",
   answers: {},
-  verdicts: {}, // to store verdicts
+  verdicts: {},
   age: "",
   id: "",
   sex: "",
@@ -51,16 +51,19 @@ function MainCard() {
   } = state;
 
   const handleNext = () => {
-    if (
-      selectedSequence !== null &&
-      currentCardIndex <= questionCardSequences[selectedSequence]?.cards.length
-    ) {
-      setState((prevState) => ({
-        ...prevState,
-        currentCardIndex: prevState.currentCardIndex + 1,
-      }));
+    if (selectedSequence !== null) {
+      const totalCards = questionCardSequences[selectedSequence]?.cards.length;
+      if (currentCardIndex < totalCards) {
+        setState((prevState) => ({
+          ...prevState,
+          currentCardIndex: prevState.currentCardIndex + 1,
+        }));
+      } else if (currentCardIndex === totalCards) {
+        setIsFinalCardShown(true);
+      }
     }
   };
+  
 
   const handlePrevious = () => {
     if (currentCardIndex > 1) {
@@ -126,9 +129,7 @@ function MainCard() {
   }, [verdicts]);
 
   useEffect(() => {
-    if (
-      currentCardIndex > questionCardSequences[selectedSequence]?.cards.length
-    ) {
+    if (currentCardIndex > questionCardSequences[selectedSequence]?.cards.length) {
       setIsFinalCardShown(true);
     }
   }, [currentCardIndex, selectedSequence, answers]);
@@ -137,17 +138,15 @@ function MainCard() {
     setCurrentVerdicts(verdicts);
   }, [verdicts]);
 
-  const progress =
-    (currentCardIndex /
-      (questionCardSequences[selectedSequence]?.cards.length || 1)) *
-    100;
+  const totalCards = questionCardSequences[selectedSequence]?.cards.length || 1;
+  const progress = ((currentCardIndex - 1) / totalCards) * 100;
 
   const isFormValid = age && id && sex;
 
   if (isFinalCardShown) {
     return (
       <>
-        <Header userSelection={userSelection} progress={progress} />
+        <Header userSelection={userSelection} progress={100} />
         <FinalCard
           handleClear={handleClear}
           age={age}
@@ -162,7 +161,7 @@ function MainCard() {
 
   return (
     <>
-      <Header userSelection={userSelection} progress={progress} />
+      <Header userSelection={userSelection} progress={Math.min(progress, 100)} />
       <MainCardContainer>
         <MainCardContent>
           {selectedSequence === null ? (
