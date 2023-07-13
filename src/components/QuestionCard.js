@@ -1,3 +1,4 @@
+// QuestionCard.js
 import React, { useState, useEffect } from "react";
 import Typography from "@mui/material/Typography";
 import Radio from "@mui/material/Radio";
@@ -12,6 +13,7 @@ import {
   StyledBox,
   StyledTypography,
 } from "./StyledComponents";
+import ValidationLogic from "./ValidationLogic";
 
 function QuestionCard({
   questions,
@@ -23,6 +25,7 @@ function QuestionCard({
 }) {
   const [localVerdict, setLocalVerdict] = useState("");
   const [isCardComplete, setIsCardComplete] = useState(false);
+  const [answersOnCurrentCard, setAnswersOnCurrentCard] = useState({});
 
   const questionGroups = questions.reduce((groups, question, index) => {
     const prevQuestion = questions[index - 1];
@@ -41,18 +44,20 @@ function QuestionCard({
   }, []);
 
   const getCardVerdict = () => {
-    const hasYesAnswer = questionGroups.some((group) =>
-      group.questions.some(
-        (question) => answers[`${currentCardIndex}-${question.index}`] === "Yes"
-      )
-    );
 
-    const cardVerdict = hasYesAnswer ? "Eligible" : "Ineligible";
+    const cardVerdict = ValidationLogic({
+      questionCardIndex: currentCardIndex,
+      answers: answersOnCurrentCard,
+    });
     setLocalVerdict(cardVerdict);
     setVerdict(currentCardIndex, cardVerdict);
   };
 
   const handleAnswer = (questionIndex, answer) => {
+    setAnswersOnCurrentCard((prevAnswers) => ({
+      ...prevAnswers,
+      [questionIndex]: answer,
+    }));
     setAnswers(questionIndex, answer);
   };
 
@@ -66,11 +71,9 @@ function QuestionCard({
     );
   }, [answers, currentCardIndex, questionGroups]);
 
-
   useEffect(() => {
     getCardVerdict();
-// eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [answers, currentCardIndex]);
+  }, [answersOnCurrentCard, currentCardIndex]);
 
   return (
     <QuestionCardContainer>
@@ -114,7 +117,9 @@ function QuestionCard({
                     <RadioGroup
                       row
                       value={
-                        answers[`${currentCardIndex}-${question.index}`] || ""
+                        answersOnCurrentCard[question.index] ||
+                        answers[`${currentCardIndex}-${question.index}`] ||
+                        ""
                       }
                       onChange={(event) =>
                         handleAnswer(question.index, event.target.value)
