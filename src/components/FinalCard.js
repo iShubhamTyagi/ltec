@@ -4,10 +4,20 @@ import Button from "@mui/material/Button";
 import { MainCardContainer, MainCardContent } from "./StyledComponents";
 
 function VerdictRow({ prefix, verdict }) {
+  let textColor = "black";
+  if (verdict.toLowerCase() === "eligible" || verdict.toLowerCase() === "yes") {
+    textColor = "green";
+  } else if (
+    verdict.toLowerCase() === "ineligible" ||
+    verdict.toLowerCase() === "no"
+  ) {
+    textColor = "red";
+  }
+
   return (
     <tr>
       <td style={styles.prefixCell}>{prefix}</td>
-      <td style={styles.tableCell}>{verdict}</td>
+      <td style={{ ...styles.tableCell, color: textColor }}>{verdict}</td>
     </tr>
   );
 }
@@ -29,19 +39,34 @@ function FinalCard({ handleClear, age, id, sex, verdicts }) {
             </colgroup>
             <tbody>
               <tr>
-                <td style={{ ...styles.prefixCell, textAlign: "left" }}>Age:</td>
-                <td style={{ ...styles.tableCell, textAlign: "left" }}>{age}</td>
+                <td style={{ ...styles.prefixCell, textAlign: "left" }}>
+                  Age:
+                </td>
+                <td style={{ ...styles.tableCell, textAlign: "left" }}>
+                  {age}
+                </td>
               </tr>
               <tr>
                 <td style={{ ...styles.prefixCell, textAlign: "left" }}>ID:</td>
                 <td style={{ ...styles.tableCell, textAlign: "left" }}>{id}</td>
               </tr>
               <tr>
-                <td style={{ ...styles.prefixCell, textAlign: "left" }}>Sex:</td>
-                <td style={{ ...styles.tableCell, textAlign: "left" }}>{sex}</td>
+                <td style={{ ...styles.prefixCell, textAlign: "left" }}>
+                  Sex:
+                </td>
+                <td style={{ ...styles.tableCell, textAlign: "left" }}>
+                  {sex}
+                </td>
               </tr>
               <tr>
-                <td style={{ ...styles.prefixCell, fontWeight: "bold", textAlign: "center" }} colSpan={2}>
+                <td
+                  style={{
+                    ...styles.prefixCell,
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                  colSpan={2}
+                >
                   Verdicts
                 </td>
               </tr>
@@ -60,11 +85,7 @@ function FinalCard({ handleClear, age, id, sex, verdicts }) {
                         ? "Contra Indications (Relative):"
                         : ""
                     }
-                    verdict={
-                      <span style={{ color: verdict === "Eligible" ? "green" : "red" }}>
-                        {verdict.toUpperCase()}
-                      </span>
-                    }
+                    verdict={verdict.toUpperCase()}
                   />
                 ))}
             </tbody>

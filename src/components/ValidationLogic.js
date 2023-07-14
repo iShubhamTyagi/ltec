@@ -1,15 +1,29 @@
+function validateFirstTwoCards(answers) {
+  const isAnyAnswerYes = Object.values(answers).some(
+    (answer) => answer === "Yes"
+  );
+  return isAnyAnswerYes ? "Eligible" : "Ineligible";
+}
+
+function validateLastTwoCards(answers) {
+  const isAnyAnswerYes = Object.values(answers).some(
+    (answer) => answer === "Yes"
+  );
+  return isAnyAnswerYes ? "Yes" : "No";
+}
 
 function ValidationLogic({ questionCardIndex, answers }) {
-  let isEligible = false;
+  let verdict = "";
+
   if (questionCardIndex <= 2) {
     // First or second card
-    isEligible = Object.values(answers).some((answer) => answer === "Yes");
+    verdict = validateFirstTwoCards(answers);
   } else if (questionCardIndex > 2 && questionCardIndex <= 4) {
     // Third or fourth card
-    isEligible = !Object.values(answers).some((answer) => answer === "Yes");
+    verdict = validateLastTwoCards(answers);
   }
 
-  return isEligible ? "Eligible" : "Ineligible";
+  return verdict;
 }
 
 export default ValidationLogic;
