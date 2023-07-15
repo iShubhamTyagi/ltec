@@ -70,7 +70,7 @@ export const MainCardContainer = styled(Card)(({ theme }) => ({
     width: "100%",
   });
 
-  export const ButtonsContainerOuter = styled(Grid)({
+  export const ButtonsContainerOuter = styled(Grid)(({ theme }) => ({
     position: "sticky",
     bottom: 0,
     background: "#fff",
@@ -78,7 +78,23 @@ export const MainCardContainer = styled(Card)(({ theme }) => ({
     marginTop: "auto", // Move the buttons to the bottom
     marginBottom: "2%",
     justifyContent: "center",
-  });
+  
+    "& .previous-next-button": {
+      background: "#0067B3", // Set the background color for Previous and Next buttons
+      color: "#FFF", // Set the text color for Previous and Next buttons
+      "&:hover": {
+        background: "#40B0DF", // Set the background color on hover for Previous and Next buttons
+      },
+    },
+  
+    "& .clear-button": {
+      background: "#40B0DF", // Set the background color for Clear button
+      color: "#FFF", // Set the text color for Clear button
+      "&:hover": {
+        background: "#FFC107", // Set the background color on hover for Clear button
+      },
+    },
+  }));
 
 
 // Styled components for QuestionCard component

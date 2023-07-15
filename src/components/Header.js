@@ -6,7 +6,7 @@ function Header({ userSelection, progress }) {
   const isMobile = useMediaQuery("(max-width: 600px)");
 
   return (
-    <AppBar position="sticky" sx={{ backgroundColor: "#005f73" }}>
+    <AppBar position="sticky" sx={{ backgroundColor: "#0067B3" }}>
       <Toolbar>
         <Typography
           variant="h6"
@@ -35,13 +35,16 @@ function Header({ userSelection, progress }) {
                 variant="determinate"
                 value={progress}
                 size={45}
-                sx={{ marginRight: 1 }}
+                sx={{
+                  marginRight: 1,
+                  color: "#FFD53D",
+                }}
               />
               <Box
                 sx={{
                   position: "absolute",
                   top: "50%",
-                  left: "50%",
+                  left: "45%",
                   transform: "translate(-50%, -50%)",
                   display: "flex",
                   alignItems: "center",
