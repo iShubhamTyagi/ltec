@@ -5,11 +5,14 @@ import { MainCardContainer, MainCardContent } from "./StyledComponents";
 
 function VerdictRow({ prefix, verdict }) {
   let textColor = "black";
-  if (verdict.toLowerCase() === "eligible" || verdict.toLowerCase() === "yes") {
+  if (
+    verdict &&
+    (verdict.toLowerCase() === "eligible" || verdict.toLowerCase() === "no")
+  ) {
     textColor = "green";
   } else if (
-    verdict.toLowerCase() === "ineligible" ||
-    verdict.toLowerCase() === "no"
+    verdict &&
+    (verdict.toLowerCase() === "ineligible" || verdict.toLowerCase() === "yes")
   ) {
     textColor = "red";
   }
@@ -17,12 +20,14 @@ function VerdictRow({ prefix, verdict }) {
   return (
     <tr>
       <td style={styles.prefixCell}>{prefix}</td>
-      <td style={{ ...styles.tableCell, color: textColor }}>{verdict}</td>
+      <td style={{ ...styles.tableCell, color: textColor }}>
+        {verdict ? verdict.toUpperCase() : ""}
+      </td>
     </tr>
   );
 }
 
-function FinalCard({ handleClear, age, id, sex, verdicts }) {
+function FinalCard({ handleClear, age, id, sex, verdicts, overallVerdict }) {
   const isVerdictsAvailable = verdicts && Object.keys(verdicts).length > 0;
 
   return (
@@ -85,9 +90,26 @@ function FinalCard({ handleClear, age, id, sex, verdicts }) {
                         ? "Contra Indications (Relative):"
                         : ""
                     }
-                    verdict={verdict.toUpperCase()}
+                    verdict={verdict}
                   />
                 ))}
+              <tr
+                style={{
+                  ...styles.prefixCell,
+                  fontWeight: "bold",
+                  textAlign: "left",
+                }}
+              >
+                <td style={styles.prefixCell}>Overall Verdict:</td>
+                <td
+                  style={{
+                    ...styles.tableCell,
+                    color: overallVerdict === "Eligible" ? "green" : "red",
+                  }}
+                >
+                  {overallVerdict ? overallVerdict.toUpperCase() : ""}
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>

@@ -38,6 +38,7 @@ function MainCard() {
   const [state, setState] = useState(initialState);
   const [isFinalCardShown, setIsFinalCardShown] = useState(false);
   const [currentVerdicts, setCurrentVerdicts] = useState({});
+  const [overallVerdict, setOverallVerdict] = useState({});
 
   const {
     selectedSequence,
@@ -59,11 +60,29 @@ function MainCard() {
           currentCardIndex: prevState.currentCardIndex + 1,
         }));
       } else if (currentCardIndex === totalCards) {
+        calculateOverallVerdict(verdicts);
         setIsFinalCardShown(true);
       }
     }
   };
-  
+
+  const calculateOverallVerdict = (verdicts) => {
+    const eligibleVerdicts = Object.values(verdicts).slice(0, 2); // Extract the first 2 verdicts
+    const yesNoVerdicts = Object.values(verdicts).slice(2, 4); // Extract the next 2 verdicts
+
+    // Check if all 4 verdicts are available
+    if (eligibleVerdicts.length === 2 && yesNoVerdicts.length === 2) {
+      // Check if both the first 2 verdicts are "Eligible" and both the next 2 verdicts are "No"
+      if (
+        eligibleVerdicts.every((verdict) => verdict === "Eligible") &&
+        yesNoVerdicts.every((verdict) => verdict === "No")
+      ) {
+        setOverallVerdict("Eligible");
+      } else {
+        setOverallVerdict("Ineligible");
+      }
+    }
+  };
 
   const handlePrevious = () => {
     if (currentCardIndex > 1) {
@@ -129,7 +148,9 @@ function MainCard() {
   }, [verdicts]);
 
   useEffect(() => {
-    if (currentCardIndex > questionCardSequences[selectedSequence]?.cards.length) {
+    if (
+      currentCardIndex > questionCardSequences[selectedSequence]?.cards.length
+    ) {
       setIsFinalCardShown(true);
     }
   }, [currentCardIndex, selectedSequence, answers]);
@@ -153,6 +174,7 @@ function MainCard() {
           id={id}
           sex={sex}
           verdicts={currentVerdicts}
+          overallVerdict={overallVerdict}
         />
         <Footer />
       </>
@@ -161,7 +183,10 @@ function MainCard() {
 
   return (
     <>
-      <Header userSelection={userSelection} progress={Math.min(progress, 100)} />
+      <Header
+        userSelection={userSelection}
+        progress={Math.min(progress, 100)}
+      />
       <MainCardContainer>
         <MainCardContent>
           {selectedSequence === null ? (
@@ -248,4 +273,3 @@ function MainCard() {
 }
 
 export default MainCard;
-
