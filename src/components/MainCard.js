@@ -28,7 +28,7 @@ const initialState = {
   currentCardIndex: 0,
   userSelection: "",
   answers: {},
-  verdicts: {}, // to store verdicts
+  verdicts: {},
   age: "",
   id: "",
   sex: "",
@@ -38,6 +38,7 @@ function MainCard() {
   const [state, setState] = useState(initialState);
   const [isFinalCardShown, setIsFinalCardShown] = useState(false);
   const [currentVerdicts, setCurrentVerdicts] = useState({});
+  const [overallVerdict, setOverallVerdict] = useState({});
 
   const {
     selectedSequence,
@@ -51,14 +52,35 @@ function MainCard() {
   } = state;
 
   const handleNext = () => {
-    if (
-      selectedSequence !== null &&
-      currentCardIndex <= questionCardSequences[selectedSequence]?.cards.length
-    ) {
-      setState((prevState) => ({
-        ...prevState,
-        currentCardIndex: prevState.currentCardIndex + 1,
-      }));
+    if (selectedSequence !== null) {
+      const totalCards = questionCardSequences[selectedSequence]?.cards.length;
+      if (currentCardIndex < totalCards) {
+        setState((prevState) => ({
+          ...prevState,
+          currentCardIndex: prevState.currentCardIndex + 1,
+        }));
+      } else if (currentCardIndex === totalCards) {
+        calculateOverallVerdict(verdicts);
+        setIsFinalCardShown(true);
+      }
+    }
+  };
+
+  const calculateOverallVerdict = (verdicts) => {
+    const eligibleVerdicts = Object.values(verdicts).slice(0, 2); // Extract the first 2 verdicts
+    const yesNoVerdicts = Object.values(verdicts).slice(2, 4); // Extract the next 2 verdicts
+
+    // Check if all 4 verdicts are available
+    if (eligibleVerdicts.length === 2 && yesNoVerdicts.length === 2) {
+      // Check if both the first 2 verdicts are "Eligible" and both the next 2 verdicts are "No"
+      if (
+        eligibleVerdicts.every((verdict) => verdict === "Eligible") &&
+        yesNoVerdicts.every((verdict) => verdict === "No")
+      ) {
+        setOverallVerdict("Eligible");
+      } else {
+        setOverallVerdict("Ineligible");
+      }
     }
   };
 
@@ -137,23 +159,22 @@ function MainCard() {
     setCurrentVerdicts(verdicts);
   }, [verdicts]);
 
-  const progress =
-    (currentCardIndex /
-      (questionCardSequences[selectedSequence]?.cards.length || 1)) *
-    100;
+  const totalCards = questionCardSequences[selectedSequence]?.cards.length || 1;
+  const progress = ((currentCardIndex - 1) / totalCards) * 100;
 
   const isFormValid = age && id && sex;
 
   if (isFinalCardShown) {
     return (
       <>
-        <Header userSelection={userSelection} progress={progress} />
+        <Header userSelection={userSelection} progress={100} />
         <FinalCard
           handleClear={handleClear}
           age={age}
           id={id}
           sex={sex}
           verdicts={currentVerdicts}
+          overallVerdict={overallVerdict}
         />
         <Footer />
       </>
@@ -162,7 +183,10 @@ function MainCard() {
 
   return (
     <>
-      <Header userSelection={userSelection} progress={progress} />
+      <Header
+        userSelection={userSelection}
+        progress={Math.min(progress, 100)}
+      />
       <MainCardContainer>
         <MainCardContent>
           {selectedSequence === null ? (
@@ -249,4 +273,3 @@ function MainCard() {
 }
 
 export default MainCard;
-
