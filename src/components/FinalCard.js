@@ -52,8 +52,12 @@ function FinalCard({ handleClear, age, id, sex, verdicts, overallVerdict }) {
                 </td>
               </tr>
               <tr>
-                <td style={{ ...styles.prefixCell, textAlign: "left" }}>ID:</td>
-                <td style={{ ...styles.tableCell, textAlign: "left" }}>{id}</td>
+                <td style={{ ...styles.prefixCell, textAlign: "left" }}>
+                  ID:
+                </td>
+                <td style={{ ...styles.tableCell, textAlign: "left" }}>
+                  {id}
+                </td>
               </tr>
               <tr>
                 <td style={{ ...styles.prefixCell, textAlign: "left" }}>
@@ -72,7 +76,17 @@ function FinalCard({ handleClear, age, id, sex, verdicts, overallVerdict }) {
                   }}
                   colSpan={2}
                 >
-                  Verdicts
+                  <div>
+                    Verdict :{" "}
+                    <span
+                      style={{
+                        marginLeft: "2px",
+                        color: overallVerdict === "Eligible" ? "green" : "red",
+                      }}
+                    >
+                      {overallVerdict ? overallVerdict.toUpperCase() : ""}
+                    </span>
+                  </div>
                 </td>
               </tr>
               {isVerdictsAvailable &&
@@ -93,23 +107,6 @@ function FinalCard({ handleClear, age, id, sex, verdicts, overallVerdict }) {
                     verdict={verdict}
                   />
                 ))}
-              <tr
-                style={{
-                  ...styles.prefixCell,
-                  fontWeight: "bold",
-                  textAlign: "left",
-                }}
-              >
-                <td style={styles.prefixCell}>Overall Verdict:</td>
-                <td
-                  style={{
-                    ...styles.tableCell,
-                    color: overallVerdict === "Eligible" ? "green" : "red",
-                  }}
-                >
-                  {overallVerdict ? overallVerdict.toUpperCase() : ""}
-                </td>
-              </tr>
             </tbody>
           </table>
         </div>
