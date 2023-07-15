@@ -1,6 +1,7 @@
 import React from "react";
 import { AppBar, Toolbar, Typography, Box, useMediaQuery } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
+import LungsIcon from "./resources/lungs.png";
 
 function Header({ userSelection, progress }) {
   const isMobile = useMediaQuery("(max-width: 600px)");
@@ -8,6 +9,13 @@ function Header({ userSelection, progress }) {
   return (
     <AppBar position="sticky" sx={{ backgroundColor: "#0067B3" }}>
       <Toolbar>
+        {/* Render the icon */}
+        <img
+          src={LungsIcon}
+          alt="Lungs Icon"
+          style={{ width: 32, height: 32, marginRight: 15 }}
+        />
+
         <Typography
           variant="h6"
           component="div"
@@ -19,12 +27,15 @@ function Header({ userSelection, progress }) {
         >
           {isMobile ? (
             <>
-              Lung Transplant<br />Eligibility Calculator
+              Lung Transplant
+              <br />
+              Eligibility Calculator
             </>
           ) : (
             "Lung Transplant Eligibility Calculator"
           )}
         </Typography>
+
         {userSelection && progress !== undefined && (
           <Box sx={{ display: "flex", alignItems: "center" }}>
             <Typography variant="h6" component="div" sx={{ marginRight: 1 }}>
