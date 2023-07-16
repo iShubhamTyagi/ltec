@@ -77,6 +77,20 @@ function QuestionCard({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [answersOnCurrentCard, currentCardIndex]);
 
+  const styles = {
+    prefixCell: {
+      // Define the styles for the prefix cell
+    },
+    tableCell: {
+      // Define the styles for the table cell
+    },
+    tableContainer: {
+      display: "flex",
+      justifyContent: "center",
+      marginTop: "20px",
+    },
+  };
+
   return (
     <QuestionCardContainer>
       <QuestionCardContent>
@@ -155,15 +169,38 @@ function QuestionCard({
               ))}
             </React.Fragment>
           ))}
-          {isCardComplete && (
-            <Typography
-              variant="body1"
-              component="div"
-              sx={{ textAlign: "left", marginTop: 2 }}
-            >
-              Verdict: {localVerdict}
-            </Typography>
-          )}
+          <div style={styles.tableContainer}>
+            <table style={{ borderCollapse: "collapse", width: "50%", border: "1px solid black", margin: "0 auto" }}>
+              <colgroup>
+                <col style={{ width: "50%" }} />
+                <col style={{ width: "1px", borderRight: "1px solid black" }} />
+              </colgroup>
+              <tbody>
+                <tr>
+                  <td style={{ ...styles.prefixCell, textAlign: "center", padding: "10px" }}>
+                    Verdict:
+                  </td>
+                  <td style={{ ...styles.prefixCell, textAlign: "center", padding: "10px", borderLeft: "1px solid black" }}>
+                    {isCardComplete && (
+                      <>
+                        <span
+                          style={{
+                            fontWeight: "bold",
+                            color:
+                              localVerdict === "No" || localVerdict === "Eligible"
+                                ? "green"
+                                : "red",
+                          }}
+                        >
+                          {localVerdict}
+                        </span>
+                      </>
+                    )}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </StyledBox>
       </QuestionCardContent>
       <Box sx={{ flexGrow: 1 }}></Box>
