@@ -75,26 +75,30 @@ export const MainCardContainer = styled(Card)(({ theme }) => ({
     bottom: 0,
     background: "#fff",
     zIndex: 1,
-    marginTop: "auto", // Move the buttons to the bottom
+    marginTop: "auto",
     marginBottom: "2%",
     justifyContent: "center",
   
     "& .previous-next-button": {
-      background: "#0067B3", // Set the background color for Previous and Next buttons
-      color: "#FFF", // Set the text color for Previous and Next buttons
+      background: "#0067B3",
+      color: "#FFF",
+      fontWeight: "normal", // Set the default font weight
+      textDecoration: "none", // Set the default text decoration
+      transition: "font-weight 0.3s, text-decoration 0.3s", // Add transition animation
+  
       "&:hover": {
-        background: "#40B0DF", // Set the background color on hover for Previous and Next buttons
+        fontWeight: "bold", // Set font weight to bold on hover
+        textDecoration: "underline", // Set text decoration to underline on hover
       },
     },
-  
     "& .clear-button": {
       background: "#40B0DF", // Set the background color for Clear button
       color: "#FFF", // Set the text color for Clear button
       "&:hover": {
         background: "#FFC107", // Set the background color on hover for Clear button
       },
-    },
-  }));
+  }}));
+  
 
 
 // Styled components for QuestionCard component

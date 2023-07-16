@@ -13,16 +13,17 @@ function Header({ userSelection, progress }) {
         <img
           src={LungsIcon}
           alt="Lungs Icon"
-          style={{ width: 32, height: 32, marginRight: 15 }}
+          style={{ width: isMobile ? 28 : 32, height: isMobile ? 28 : 32, marginRight: isMobile ? 8 : 15 }}
         />
 
         <Typography
-          variant="h6"
+          variant={isMobile ? "h6" : "h5"}
           component="div"
           textAlign="left"
           sx={{
             flexGrow: 1,
             whiteSpace: isMobile ? "normal" : "nowrap",
+            fontSize: isMobile ? "1.5rem" : "2rem",
           }}
         >
           {isMobile ? (

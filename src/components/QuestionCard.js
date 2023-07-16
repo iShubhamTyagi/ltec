@@ -1,4 +1,3 @@
-// QuestionCard.js
 import React, { useState, useEffect } from "react";
 import Typography from "@mui/material/Typography";
 import Radio from "@mui/material/Radio";
@@ -14,6 +13,9 @@ import {
   StyledTypography,
 } from "./StyledComponents";
 import ValidationLogic from "./ValidationLogic";
+import Divider from "@mui/material/Divider";
+import KeyboardArrowRightTwoToneIcon from '@mui/icons-material/KeyboardArrowRightTwoTone';
+import KeyboardDoubleArrowRightTwoToneIcon from '@mui/icons-material/KeyboardDoubleArrowRightTwoTone';
 
 function QuestionCard({
   questions,
@@ -44,7 +46,6 @@ function QuestionCard({
   }, []);
 
   const getCardVerdict = () => {
-
     const cardVerdict = ValidationLogic({
       questionCardIndex: currentCardIndex,
       answers: answersOnCurrentCard,
@@ -88,24 +89,38 @@ function QuestionCard({
             {title}
           </Typography>
           {questionGroups.map((group, groupIndex) => (
-            <Box key={groupIndex} sx={{ marginBottom: 2 }}>
+            <React.Fragment key={groupIndex}>
+              {groupIndex !== 0 && <Divider sx={{ marginBottom: 2 }} />}
               {group.subheading && (
-                <StyledTypography
-                  variant="subtitle1"
-                  component="div"
-                  sx={{ textAlign: "left" }}
-                >
-                  {group.subheading}
-                </StyledTypography>
+                <>
+                  <StyledTypography
+                    variant="subtitle1"
+                    component="div"
+                    sx={{ textAlign: "left" }}
+                  >
+                    {group.subheading}
+                  </StyledTypography>
+                  <Divider sx={{ marginBottom: 2 }} />
+                </>
               )}
-              {group.questions.map((question) => (
+              {group.questions.map((question, questionIndex) => (
                 <QuestionContainer key={question.index}>
                   <Grid item xs={12} md={6}>
                     <Typography
                       variant="body1"
                       component="div"
-                      sx={{ textAlign: "left" }}
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        textAlign: "left",
+                        paddingLeft: group.subheading ? "20px" : "0",
+                      }}
                     >
+                      {group.subheading ? (
+                        <KeyboardDoubleArrowRightTwoToneIcon sx={{ marginRight: 1 }} />
+                      ) : (
+                        <KeyboardArrowRightTwoToneIcon sx={{ marginRight: 1 }} />
+                      )}
                       {question.text}
                     </Typography>
                   </Grid>
@@ -138,7 +153,7 @@ function QuestionCard({
                   </Grid>
                 </QuestionContainer>
               ))}
-            </Box>
+            </React.Fragment>
           ))}
           {isCardComplete && (
             <Typography
