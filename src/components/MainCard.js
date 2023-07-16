@@ -192,6 +192,9 @@ function MainCard() {
           {selectedSequence === null ? (
             <>
               <Grid>
+              <MainCardTitle variant="h6" component="div">
+                Enter Patient Details:
+              </MainCardTitle>
                 <div style={{ marginBottom: "16px" }}>
                   <TextField
                     label="Age"
@@ -212,6 +215,7 @@ function MainCard() {
                   <FormControl style={{ width: "170px" }}>
                     <InputLabel>Sex</InputLabel>
                     <Select
+                    label="sex"
                       value={sex}
                       onChange={(event) => handleInputChange(event, "sex")}
                     >
@@ -223,7 +227,7 @@ function MainCard() {
                 </div>
               </Grid>
               <MainCardTitle variant="h6" component="div">
-                Choose the Patient Disease:
+                Choose Patient's Disease:
               </MainCardTitle>
               <RadioGroupContainer row onChange={handleSelection}>
                 {questionCardSequences.map((sequence, index) => (

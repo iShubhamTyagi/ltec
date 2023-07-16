@@ -1,4 +1,3 @@
-// QuestionCard.js
 import React, { useState, useEffect } from "react";
 import Typography from "@mui/material/Typography";
 import Radio from "@mui/material/Radio";
@@ -14,6 +13,9 @@ import {
   StyledTypography,
 } from "./StyledComponents";
 import ValidationLogic from "./ValidationLogic";
+import Divider from "@mui/material/Divider";
+import KeyboardArrowRightTwoToneIcon from '@mui/icons-material/KeyboardArrowRightTwoTone';
+import KeyboardDoubleArrowRightTwoToneIcon from '@mui/icons-material/KeyboardDoubleArrowRightTwoTone';
 
 function QuestionCard({
   questions,
@@ -44,7 +46,6 @@ function QuestionCard({
   }, []);
 
   const getCardVerdict = () => {
-
     const cardVerdict = ValidationLogic({
       questionCardIndex: currentCardIndex,
       answers: answersOnCurrentCard,
@@ -76,6 +77,20 @@ function QuestionCard({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [answersOnCurrentCard, currentCardIndex]);
 
+  const styles = {
+    prefixCell: {
+      // Define the styles for the prefix cell
+    },
+    tableCell: {
+      // Define the styles for the table cell
+    },
+    tableContainer: {
+      display: "flex",
+      justifyContent: "center",
+      marginTop: "20px",
+    },
+  };
+
   return (
     <QuestionCardContainer>
       <QuestionCardContent>
@@ -88,24 +103,38 @@ function QuestionCard({
             {title}
           </Typography>
           {questionGroups.map((group, groupIndex) => (
-            <Box key={groupIndex} sx={{ marginBottom: 2 }}>
+            <React.Fragment key={groupIndex}>
+              {groupIndex !== 0 && <Divider sx={{ marginBottom: 2 }} />}
               {group.subheading && (
-                <StyledTypography
-                  variant="subtitle1"
-                  component="div"
-                  sx={{ textAlign: "left" }}
-                >
-                  {group.subheading}
-                </StyledTypography>
+                <>
+                  <StyledTypography
+                    variant="subtitle1"
+                    component="div"
+                    sx={{ textAlign: "left" }}
+                  >
+                    {group.subheading}
+                  </StyledTypography>
+                  <Divider sx={{ marginBottom: 2 }} />
+                </>
               )}
-              {group.questions.map((question) => (
+              {group.questions.map((question, questionIndex) => (
                 <QuestionContainer key={question.index}>
                   <Grid item xs={12} md={6}>
                     <Typography
                       variant="body1"
                       component="div"
-                      sx={{ textAlign: "left" }}
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        textAlign: "left",
+                        paddingLeft: group.subheading ? "20px" : "0",
+                      }}
                     >
+                      {group.subheading ? (
+                        <KeyboardDoubleArrowRightTwoToneIcon sx={{ marginRight: 1 }} />
+                      ) : (
+                        <KeyboardArrowRightTwoToneIcon sx={{ marginRight: 1 }} />
+                      )}
                       {question.text}
                     </Typography>
                   </Grid>
@@ -138,17 +167,40 @@ function QuestionCard({
                   </Grid>
                 </QuestionContainer>
               ))}
-            </Box>
+            </React.Fragment>
           ))}
-          {isCardComplete && (
-            <Typography
-              variant="body1"
-              component="div"
-              sx={{ textAlign: "left", marginTop: 2 }}
-            >
-              Verdict: {localVerdict}
-            </Typography>
-          )}
+          <div style={styles.tableContainer}>
+            <table style={{ borderCollapse: "collapse", width: "50%", border: "1px solid black", margin: "0 auto" }}>
+              <colgroup>
+                <col style={{ width: "50%" }} />
+                <col style={{ width: "1px", borderRight: "1px solid black" }} />
+              </colgroup>
+              <tbody>
+                <tr>
+                  <td style={{ ...styles.prefixCell, textAlign: "center", padding: "10px" }}>
+                    Verdict:
+                  </td>
+                  <td style={{ ...styles.prefixCell, textAlign: "center", padding: "10px", borderLeft: "1px solid black" }}>
+                    {isCardComplete && (
+                      <>
+                        <span
+                          style={{
+                            fontWeight: "bold",
+                            color:
+                              localVerdict === "No" || localVerdict === "Eligible"
+                                ? "green"
+                                : "red",
+                          }}
+                        >
+                          {localVerdict}
+                        </span>
+                      </>
+                    )}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </StyledBox>
       </QuestionCardContent>
       <Box sx={{ flexGrow: 1 }}></Box>

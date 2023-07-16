@@ -11,6 +11,8 @@ function Buttons({ handleClear, handlePrevious, handleNext }) {
           variant="contained"
           color="secondary"
           onClick={handleClear}
+          className="clear-button" 
+          sx={{ width: "80%" }} // Set the width to 100% for responsive and equal sizing
         >
           Clear
         </Button>
@@ -20,6 +22,8 @@ function Buttons({ handleClear, handlePrevious, handleNext }) {
           variant="contained"
           color="primary"
           onClick={handlePrevious}
+          className="previous-next-button"
+          sx={{ width: "80%" }} // Set the width to 100% for responsive and equal sizing
         >
           Previous
         </Button>
@@ -29,6 +33,8 @@ function Buttons({ handleClear, handlePrevious, handleNext }) {
           variant="contained"
           color="primary"
           onClick={handleNext}
+          className="previous-next-button"
+          sx={{ width: "80%" }} // Set the width to 100% for responsive and equal sizing
         >
           Next
         </Button>
