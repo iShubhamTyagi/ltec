@@ -188,6 +188,7 @@ function QuestionCard({
                 width: "50%",
                 border: "1px solid black",
                 margin: "0 auto",
+                textTransform: "uppercase", // Add text-transform property
               }}
             >
               <colgroup>
@@ -203,7 +204,7 @@ function QuestionCard({
                       padding: "10px",
                     }}
                   >
-                    Verdict:
+                    VERDICT: {/* Transform the text to uppercase */}
                   </td>
                   <td
                     style={{
@@ -219,8 +220,8 @@ function QuestionCard({
                           style={{
                             fontWeight: "bold",
                             color:
-                              localVerdict === "No" ||
-                              localVerdict === "Eligible"
+                              localVerdict.toUpperCase() === "NO" ||
+                              localVerdict.toUpperCase() === "ELIGIBLE"
                                 ? "green"
                                 : "red",
                           }}
