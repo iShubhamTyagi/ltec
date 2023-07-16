@@ -14,8 +14,8 @@ import {
 } from "./StyledComponents";
 import ValidationLogic from "./ValidationLogic";
 import Divider from "@mui/material/Divider";
-import KeyboardArrowRightTwoToneIcon from '@mui/icons-material/KeyboardArrowRightTwoTone';
-import KeyboardDoubleArrowRightTwoToneIcon from '@mui/icons-material/KeyboardDoubleArrowRightTwoTone';
+import KeyboardArrowRightTwoToneIcon from "@mui/icons-material/KeyboardArrowRightTwoTone";
+import KeyboardDoubleArrowRightTwoToneIcon from "@mui/icons-material/KeyboardDoubleArrowRightTwoTone";
 
 function QuestionCard({
   questions,
@@ -131,15 +131,20 @@ function QuestionCard({
                       }}
                     >
                       {group.subheading ? (
-                        <KeyboardDoubleArrowRightTwoToneIcon sx={{ marginRight: 1 }} />
+                        <KeyboardDoubleArrowRightTwoToneIcon
+                          sx={{ marginRight: 1 }}
+                        />
                       ) : (
-                        <KeyboardArrowRightTwoToneIcon sx={{ marginRight: 1 }} />
+                        <KeyboardArrowRightTwoToneIcon
+                          sx={{ marginRight: 1 }}
+                        />
                       )}
                       {question.text}
                     </Typography>
                   </Grid>
                   <Grid
                     item
+                    container
                     xs={12}
                     md={6}
                     sx={{ display: "flex", justifyContent: "flex-start" }}
@@ -156,12 +161,19 @@ function QuestionCard({
                       }
                     >
                       {["Yes", "No", "n.a."].map((option) => (
-                        <FormControlLabel
-                          key={option}
-                          value={option}
-                          control={<Radio />}
-                          label={option}
-                        />
+                        <Grid item key={option} xs={4} sm={4} md={4}>
+                          <FormControlLabel
+                            value={option}
+                            control={<Radio />}
+                            label={option}
+                            sx={{
+                              marginLeft: "10px",
+                              "& .MuiFormControlLabel-label": {
+                                marginLeft: "1px",
+                              },
+                            }}
+                          />
+                        </Grid>
                       ))}
                     </RadioGroup>
                   </Grid>
@@ -170,24 +182,45 @@ function QuestionCard({
             </React.Fragment>
           ))}
           <div style={styles.tableContainer}>
-            <table style={{ borderCollapse: "collapse", width: "50%", border: "1px solid black", margin: "0 auto" }}>
+            <table
+              style={{
+                borderCollapse: "collapse",
+                width: "50%",
+                border: "1px solid black",
+                margin: "0 auto",
+              }}
+            >
               <colgroup>
                 <col style={{ width: "50%" }} />
                 <col style={{ width: "1px", borderRight: "1px solid black" }} />
               </colgroup>
               <tbody>
                 <tr>
-                  <td style={{ ...styles.prefixCell, textAlign: "center", padding: "10px" }}>
+                  <td
+                    style={{
+                      ...styles.prefixCell,
+                      textAlign: "center",
+                      padding: "10px",
+                    }}
+                  >
                     Verdict:
                   </td>
-                  <td style={{ ...styles.prefixCell, textAlign: "center", padding: "10px", borderLeft: "1px solid black" }}>
+                  <td
+                    style={{
+                      ...styles.prefixCell,
+                      textAlign: "center",
+                      padding: "10px",
+                      borderLeft: "1px solid black",
+                    }}
+                  >
                     {isCardComplete && (
                       <>
                         <span
                           style={{
                             fontWeight: "bold",
                             color:
-                              localVerdict === "No" || localVerdict === "Eligible"
+                              localVerdict === "No" ||
+                              localVerdict === "Eligible"
                                 ? "green"
                                 : "red",
                           }}
