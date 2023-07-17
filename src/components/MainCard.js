@@ -39,6 +39,7 @@ function MainCard() {
   const [isFinalCardShown, setIsFinalCardShown] = useState(false);
   const [currentVerdicts, setCurrentVerdicts] = useState({});
   const [overallVerdict, setOverallVerdict] = useState({});
+  const [timer, setTimer] = useState(0); 
 
   const {
     selectedSequence,
@@ -143,6 +144,10 @@ function MainCard() {
     }));
   };
 
+  const updateTimer = (timer) => {
+    setTimer(timer);
+  };
+
   useEffect(() => {
     console.log(verdicts);
   }, [verdicts]);
@@ -165,9 +170,10 @@ function MainCard() {
   const isFormValid = age && id && sex;
 
   if (isFinalCardShown) {
+    console.log(timer);
     return (
       <>
-        <Header userSelection={userSelection} progress={100} />
+        <Header userSelection={userSelection} progress={100} updateTimer={updateTimer} />
         <FinalCard
           handleClear={handleClear}
           age={age}
@@ -186,6 +192,7 @@ function MainCard() {
       <Header
         userSelection={userSelection}
         progress={Math.min(progress, 100)}
+        timer={timer}
       />
       <MainCardContainer>
         <MainCardContent>

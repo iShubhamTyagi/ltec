@@ -3,7 +3,7 @@ import { AppBar, Toolbar, Typography, Box, useMediaQuery } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import LungsIcon from "./resources/lungs.png";
 
-function Header({ userSelection, progress }) {
+function Header({ userSelection, progress, updateTimer }) {
   const isMobile = useMediaQuery("(max-width: 600px)");
   const [timer, setTimer] = useState(0);
 
@@ -16,6 +16,10 @@ function Header({ userSelection, progress }) {
       intervalId = setInterval(() => {
         setTimer((prevTimer) => prevTimer + 1);
       }, 1000);
+    } else {
+      // Timer stops counting
+      clearInterval(intervalId);
+      updateTimer(timer); // Call the callback function with the final timer value
     }
 
     return () => {
