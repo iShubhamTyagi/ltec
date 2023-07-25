@@ -23,6 +23,7 @@ import {
   ButtonsContainerOuter,
 } from "./StyledComponents";
 
+import storeData from './DataStorage';
 const initialState = {
   selectedSequence: null,
   currentCardIndex: 0,
@@ -170,6 +171,14 @@ function MainCard() {
   const isFormValid = age && id && sex;
 
   if (isFinalCardShown) {
+    storeData(selectedSequence,
+      age,
+      id,
+      sex,
+      answers,
+      verdicts,
+      overallVerdict,
+      timer);
     console.log(timer);
     return (
       <>
