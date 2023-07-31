@@ -34,7 +34,6 @@ const initialState = {
   id: "",
   sex: "",
   timer:0,
-  isDataReady:false,
 };
 
 function MainCard() {
@@ -43,7 +42,6 @@ function MainCard() {
   const [currentVerdicts, setCurrentVerdicts] = useState({});
   const [overallVerdict, setOverallVerdict] = useState({});
   const [timer, setTimer] = useState(0); 
-  const [isDataReady, setIsDataReady] = useState(false);
 
   const {
     selectedSequence,
@@ -148,46 +146,9 @@ function MainCard() {
     }));
   };
 
-  const checkDataReady = () => {
-    return (
-      selectedSequence !== null &&
-      age !== "" &&
-      id !== "" &&
-      sex !== "" &&
-      Object.keys(answers).length > 0 &&
-      Object.keys(verdicts).length > 0 &&
-      overallVerdict !== "" &&
-      timer !== 0
-    );
-  };
   useEffect(() => {
     setCurrentVerdicts(verdicts);
-    setIsDataReady(checkDataReady());
   }, [verdicts]);
-
-  useEffect(() => {
-    if (isFinalCardShown && isDataReady && (
-      selectedSequence !== undefined &&
-      age !== undefined &&
-      id !== undefined &&
-      sex !== undefined &&
-      answers !== undefined &&
-      verdicts !== undefined &&
-      overallVerdict !== undefined &&
-      timer !== undefined
-    )) {
-      storeData(
-        selectedSequence,
-        age,
-        id,
-        sex,
-        answers,
-        verdicts,
-        overallVerdict,
-        timer
-      );
-    }
-  }, [isFinalCardShown, isDataReady]);
 
   const updateTimer = (timer) => {
     setTimer(timer);
