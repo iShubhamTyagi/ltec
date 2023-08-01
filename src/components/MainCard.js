@@ -70,12 +70,10 @@ function MainCard() {
   };
 
   const calculateOverallVerdict = (verdicts) => {
-    const eligibleVerdicts = Object.values(verdicts).slice(0, 2); // Extract the first 2 verdicts
-    const yesNoVerdicts = Object.values(verdicts).slice(2, 4); // Extract the next 2 verdicts
+    const eligibleVerdicts = Object.values(verdicts).slice(0, 2);
+    const yesNoVerdicts = Object.values(verdicts).slice(2, 4);
 
-    // Check if all 4 verdicts are available
     if (eligibleVerdicts.length === 2 && yesNoVerdicts.length === 2) {
-      // Check if both the first 2 verdicts are "Eligible" and both the next 2 verdicts are "No"
       if (
         eligibleVerdicts.every((verdict) => verdict === "Eligible") &&
         yesNoVerdicts.every((verdict) => verdict === "No")
@@ -124,7 +122,7 @@ function MainCard() {
   const setAnswers = (index, answer) => {
     setState((prevState) => {
       const updatedAnswers = { ...prevState.answers };
-      const key = `${currentCardIndex}-${index}`; // Create a unique key
+      const key = `${currentCardIndex}-${index}`;
       updatedAnswers[key] = answer;
 
       return { ...prevState, answers: updatedAnswers };

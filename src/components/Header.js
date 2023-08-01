@@ -11,15 +11,14 @@ function Header({ userSelection, progress, updateTimer }) {
     let intervalId;
 
     if (progress === -100) {
-      setTimer(0); // Reset timer when progress goes back to initial screen
+      setTimer(0);
     } else if (progress < 100) {
       intervalId = setInterval(() => {
         setTimer((prevTimer) => prevTimer + 1);
       }, 1000);
     } else {
-      // Timer stops counting
       clearInterval(intervalId);
-      updateTimer(timer); // Call the callback function with the final timer value
+      updateTimer(timer);
     }
 
     return () => {
@@ -38,7 +37,6 @@ function Header({ userSelection, progress, updateTimer }) {
   return (
     <AppBar position="sticky" sx={{ backgroundColor: "#0067B3" }}>
       <Toolbar>
-        {/* Render the icon */}
         <img
           src={LungsIcon}
           alt="Lungs Icon"
