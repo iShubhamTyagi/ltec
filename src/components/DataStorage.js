@@ -38,7 +38,7 @@ function storeData(
     console.log("Data to be sent to backend: " + jsonData);
 
     // Send the jsonData to the backend using the fetch method
-    fetch("https://localhost:7257/ltec", {
+    fetch("https://ltecapi.azurewebsites.net/ltec", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
