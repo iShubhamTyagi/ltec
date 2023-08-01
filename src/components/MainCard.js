@@ -146,15 +146,12 @@ function MainCard() {
 
   useEffect(() => {
     setCurrentVerdicts(verdicts);
+    console.log(verdicts);
   }, [verdicts]);
 
   const updateTimer = (timer) => {
     setTimer(timer);
   };
-
-  useEffect(() => {
-    console.log(verdicts);
-  }, [verdicts]);
 
   useEffect(() => {
     if (
@@ -168,21 +165,27 @@ function MainCard() {
     setCurrentVerdicts(verdicts);
   }, [verdicts]);
 
+  useEffect(() => {
+    if(isFinalCardShown)
+    if (timer !== 0) {{
+      storeData(selectedSequence,
+        age,
+        id,
+        sex,
+        answers,
+        verdicts,
+        overallVerdict,
+        timer);
+
+    }}
+  }, [overallVerdict, timer]);
+
   const totalCards = questionCardSequences[selectedSequence]?.cards.length || 1;
   const progress = ((currentCardIndex - 1) / totalCards) * 100;
 
   const isFormValid = age && id && sex;
 
   if (isFinalCardShown) {
-    storeData(selectedSequence,
-      age,
-      id,
-      sex,
-      answers,
-      verdicts,
-      overallVerdict,
-      timer);
-    console.log(timer);
     return (
       <>
         <Header userSelection={userSelection} progress={100} updateTimer={updateTimer} />
