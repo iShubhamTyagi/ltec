@@ -24,6 +24,7 @@ function Header({ userSelection, progress, updateTimer }) {
     return () => {
       clearInterval(intervalId);
     };
+  // eslint-disable-next-line
   }, [progress]);
 
   const formatTime = (time) => {

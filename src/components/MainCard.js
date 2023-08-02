@@ -165,19 +165,21 @@ function MainCard() {
     setCurrentVerdicts(verdicts);
   }, [verdicts]);
 
+
   useEffect(() => {
-    if(isFinalCardShown)
-    if (timer !== 0) {{
-      storeData(selectedSequence,
+    if (isFinalCardShown && timer !== 0) {
+      storeData(
+        selectedSequence,
         age,
         id,
         sex,
         answers,
         verdicts,
         overallVerdict,
-        timer);
-
-    }}
+        timer
+      );
+    }
+    // eslint-disable-next-line
   }, [overallVerdict, timer]);
 
   const totalCards = questionCardSequences[selectedSequence]?.cards.length || 1;
