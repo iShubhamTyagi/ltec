@@ -3,7 +3,7 @@ import { AppBar, Toolbar, Typography, Box, useMediaQuery } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import LungsIcon from "./resources/lungs.png";
 
-function Header({ userSelection, progress }) {
+function Header({ userSelection, progress, updateTimer }) {
   const isMobile = useMediaQuery("(max-width: 600px)");
   const [timer, setTimer] = useState(0);
 
@@ -11,11 +11,14 @@ function Header({ userSelection, progress }) {
     let intervalId;
 
     if (progress === -100) {
-      setTimer(0); // Reset timer when progress goes back to initial screen
+      setTimer(0);
     } else if (progress < 100) {
       intervalId = setInterval(() => {
         setTimer((prevTimer) => prevTimer + 1);
       }, 1000);
+    } else {
+      clearInterval(intervalId);
+      updateTimer(timer);
     }
 
     return () => {
@@ -34,7 +37,6 @@ function Header({ userSelection, progress }) {
   return (
     <AppBar position="sticky" sx={{ backgroundColor: "#0067B3" }}>
       <Toolbar>
-        {/* Render the icon */}
         <img
           src={LungsIcon}
           alt="Lungs Icon"

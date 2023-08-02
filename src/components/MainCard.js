@@ -23,6 +23,7 @@ import {
   ButtonsContainerOuter,
 } from "./StyledComponents";
 
+import storeData from './DataStorage';
 const initialState = {
   selectedSequence: null,
   currentCardIndex: 0,
@@ -32,6 +33,7 @@ const initialState = {
   age: "",
   id: "",
   sex: "",
+  timer:0,
 };
 
 function MainCard() {
@@ -39,6 +41,7 @@ function MainCard() {
   const [isFinalCardShown, setIsFinalCardShown] = useState(false);
   const [currentVerdicts, setCurrentVerdicts] = useState({});
   const [overallVerdict, setOverallVerdict] = useState({});
+  const [timer, setTimer] = useState(0); 
 
   const {
     selectedSequence,
@@ -67,12 +70,10 @@ function MainCard() {
   };
 
   const calculateOverallVerdict = (verdicts) => {
-    const eligibleVerdicts = Object.values(verdicts).slice(0, 2); // Extract the first 2 verdicts
-    const yesNoVerdicts = Object.values(verdicts).slice(2, 4); // Extract the next 2 verdicts
+    const eligibleVerdicts = Object.values(verdicts).slice(0, 2);
+    const yesNoVerdicts = Object.values(verdicts).slice(2, 4);
 
-    // Check if all 4 verdicts are available
     if (eligibleVerdicts.length === 2 && yesNoVerdicts.length === 2) {
-      // Check if both the first 2 verdicts are "Eligible" and both the next 2 verdicts are "No"
       if (
         eligibleVerdicts.every((verdict) => verdict === "Eligible") &&
         yesNoVerdicts.every((verdict) => verdict === "No")
@@ -121,7 +122,7 @@ function MainCard() {
   const setAnswers = (index, answer) => {
     setState((prevState) => {
       const updatedAnswers = { ...prevState.answers };
-      const key = `${currentCardIndex}-${index}`; // Create a unique key
+      const key = `${currentCardIndex}-${index}`;
       updatedAnswers[key] = answer;
 
       return { ...prevState, answers: updatedAnswers };
@@ -144,8 +145,13 @@ function MainCard() {
   };
 
   useEffect(() => {
+    setCurrentVerdicts(verdicts);
     console.log(verdicts);
   }, [verdicts]);
+
+  const updateTimer = (timer) => {
+    setTimer(timer);
+  };
 
   useEffect(() => {
     if (
@@ -159,6 +165,21 @@ function MainCard() {
     setCurrentVerdicts(verdicts);
   }, [verdicts]);
 
+  useEffect(() => {
+    if(isFinalCardShown)
+    if (timer !== 0) {{
+      storeData(selectedSequence,
+        age,
+        id,
+        sex,
+        answers,
+        verdicts,
+        overallVerdict,
+        timer);
+
+    }}
+  }, [overallVerdict, timer]);
+
   const totalCards = questionCardSequences[selectedSequence]?.cards.length || 1;
   const progress = ((currentCardIndex - 1) / totalCards) * 100;
 
@@ -167,7 +188,7 @@ function MainCard() {
   if (isFinalCardShown) {
     return (
       <>
-        <Header userSelection={userSelection} progress={100} />
+        <Header userSelection={userSelection} progress={100} updateTimer={updateTimer} />
         <FinalCard
           handleClear={handleClear}
           age={age}
@@ -186,6 +207,7 @@ function MainCard() {
       <Header
         userSelection={userSelection}
         progress={Math.min(progress, 100)}
+        timer={timer}
       />
       <MainCardContainer>
         <MainCardContent>
