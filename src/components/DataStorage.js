@@ -8,7 +8,7 @@ function storeData(
   overallVerdict,
   timer
 ) {
-  // Check if all the required data is available
+
   if (
     selectedSequence !== undefined &&
     age !== undefined &&
@@ -19,9 +19,17 @@ function storeData(
     overallVerdict !== undefined &&
     timer !== undefined
   ) {
-    // Create a JSON object with all the data
+
+    const sequenceMapping = {
+    0: "COPD",
+    1: "ILD",
+    2: "Bronchiectasis"
+    };
+
+    const selectedSequenceWord = sequenceMapping[selectedSequence];
+
     const data = {
-      selectedSequence: selectedSequence,
+      disease: selectedSequenceWord,
       age: age,
       id: id,
       sex: sex,
@@ -31,10 +39,8 @@ function storeData(
       timer: timer,
     };
 
-    // Convert the JSON object to a JSON string
     const jsonData = JSON.stringify(data);
 
-    // Log the JSON string (optional)
     console.log("Data to be sent to backend: " + jsonData);
 
     // Send the jsonData to the backend using the fetch method
