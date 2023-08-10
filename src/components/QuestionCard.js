@@ -34,11 +34,11 @@ function QuestionCard({
     const currentGroup = groups[groups.length - 1];
 
     if (prevQuestion && prevQuestion.subheading === question.subheading) {
-      currentGroup.questions.push({ ...question, index });
+      currentGroup.questions.push({ ...question, index: index + 1 });
     } else {
       groups.push({
         subheading: question.subheading,
-        questions: [{ ...question, index }],
+        questions: [{ ...question, index: index + 1 }],
       });
     }
 
@@ -78,12 +78,8 @@ function QuestionCard({
   }, [answersOnCurrentCard, currentCardIndex]);
 
   const styles = {
-    prefixCell: {
-      // Define the styles for the prefix cell
-    },
-    tableCell: {
-      // Define the styles for the table cell
-    },
+    prefixCell: {},
+    tableCell: {},
     tableContainer: {
       display: "flex",
       justifyContent: "center",
