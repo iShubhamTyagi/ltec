@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Grid } from "@mui/material";
 import {
   TextField,
@@ -24,6 +24,8 @@ import {
 } from "./StyledComponents";
 
 import storeData from './DataStorage';
+import { UserContext } from "./UserContext";
+
 const initialState = {
   selectedSequence: null,
   currentCardIndex: 0,
@@ -42,6 +44,7 @@ function MainCard() {
   const [currentVerdicts, setCurrentVerdicts] = useState({});
   const [overallVerdict, setOverallVerdict] = useState({});
   const [timer, setTimer] = useState(0); 
+  const { username, password } = useContext(UserContext);
 
   const {
     selectedSequence,
@@ -168,6 +171,7 @@ function MainCard() {
 
   useEffect(() => {
     if (isFinalCardShown && timer !== 0) {
+      console.log(" MainCard Logs ----->" +  username, password);
       storeData(
         selectedSequence,
         age,
@@ -176,7 +180,9 @@ function MainCard() {
         answers,
         verdicts,
         overallVerdict,
-        timer
+        timer,
+        username,
+        password
       );
     }
     // eslint-disable-next-line

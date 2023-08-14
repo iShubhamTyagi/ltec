@@ -6,7 +6,9 @@ function storeData(
   answers,
   verdicts,
   overallVerdict,
-  timer
+  timer,
+  username,
+  password
 ) {
 
   if (
@@ -17,7 +19,9 @@ function storeData(
     answers !== undefined &&
     verdicts !== undefined &&
     overallVerdict !== undefined &&
-    timer !== undefined
+    timer !== undefined  &&
+    username !== undefined  &&
+    password !== undefined
   ) {
 
     const sequenceMapping = {
@@ -37,6 +41,8 @@ function storeData(
       verdicts: verdicts,
       overallVerdict: overallVerdict,
       timer: timer,
+      username: username,
+      password: password
     };
 
     const jsonData = JSON.stringify(data);

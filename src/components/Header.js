@@ -60,9 +60,7 @@ function Header({ userSelection, progress, updateTimer }) {
         >
           {isMobile ? (
             <>
-              Lung Transplant
-              <br />
-              Eligibility Calculator
+              LTEC
             </>
           ) : (
             "Lung Transplant Eligibility Calculator"
