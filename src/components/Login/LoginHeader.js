@@ -1,6 +1,6 @@
 import React from "react";
 import { AppBar, Toolbar, Typography, useMediaQuery } from "@mui/material";
-import LungsIcon from "./../resources/lungs.png";
+import LungsIcon from "./../resources/ltec_icon.png";
 
 function LoginHeader() {
   const isMobile = useMediaQuery("(max-width: 600px)");
