@@ -6,7 +6,9 @@ function storeData(
   answers,
   verdicts,
   overallVerdict,
-  timer
+  timer,
+  username,
+  password
 ) {
 
   if (
@@ -17,16 +19,33 @@ function storeData(
     answers !== undefined &&
     verdicts !== undefined &&
     overallVerdict !== undefined &&
-    timer !== undefined
+    timer !== undefined  &&
+    username !== undefined  &&
+    password !== undefined
   ) {
 
     const sequenceMapping = {
-    0: "COPD",
-    1: "ILD",
-    2: "Bronchiectasis"
+      0: "COPD",
+      1: "ILD",
+      2: "Bronchiectasis"
     };
 
     const selectedSequenceWord = sequenceMapping[selectedSequence];
+
+    const currentDate = new Date();
+    
+    const formatDate = (date) => {
+      const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+      return new Intl.DateTimeFormat('default', options).format(date);
+    };
+    
+    const formatTime = (date) => {
+      const options = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
+      return new Intl.DateTimeFormat('default', options).format(date);
+    };
+
+    const formattedDate = formatDate(currentDate);
+    const formattedTime = formatTime(currentDate);
 
     const data = {
       disease: selectedSequenceWord,
@@ -36,7 +55,11 @@ function storeData(
       answers: answers,
       verdicts: verdicts,
       overallVerdict: overallVerdict,
-      timer: timer,
+      duration: timer,
+      username: username,
+      password: password,
+      Date: formattedDate,
+      Time: formattedTime
     };
 
     const jsonData = JSON.stringify(data);
@@ -44,7 +67,7 @@ function storeData(
     console.log("Data to be sent to backend: " + jsonData);
 
     // Send the jsonData to the backend using the fetch method
-    fetch("https://ltecapi.azurewebsites.net/ltec", {
+    fetch("https://localhost:7257/ltec", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
