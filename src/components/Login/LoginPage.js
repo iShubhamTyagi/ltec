@@ -26,6 +26,7 @@ function LoginPage({ onLogin }) {
   const handleLogin = () => {
     setLoading(true);
     if (username && password === "123") {
+      setError(null); // Clear the error on successful login attempt
       onLogin(username, password);
     } else {
       setError("Invalid username or password!");
@@ -36,6 +37,13 @@ function LoginPage({ onLogin }) {
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       handleLogin();
+    }
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+    if (error) {
+      setError(null); // Clear the error when password is changed
     }
   };
 
@@ -57,7 +65,7 @@ function LoginPage({ onLogin }) {
           type="password"
           label="Password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={handlePasswordChange} // Use the custom handler for password change
         />
         <ButtonsContainerOuter container>
           <LoginButton
@@ -70,11 +78,10 @@ function LoginPage({ onLogin }) {
           </LoginButton>
         </ButtonsContainerOuter>
         <div style={{ height: '20px' }}>
-  {error && <Typography color="error" variant="h6">{error}</Typography>}
-</div>
+          {error && <Typography color="error" variant="h6">{error}</Typography>}
+        </div>
       </MainCardContent>
     </MainCardContainer>
   );
 }
-
 export default LoginPage;
