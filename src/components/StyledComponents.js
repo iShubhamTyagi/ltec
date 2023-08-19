@@ -6,6 +6,7 @@ export const MainCardContainer = styled(Card)(({ theme }) => ({
   margin: "auto", // Center horizontally
   marginTop: "1%", // Adjust the top margin as desired
   marginBottom: "2%", // Adjust the bottom margin as desired
+  paddingBottom: "70px",
   boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
   position: "relative",
   overflow: "hidden",
@@ -74,7 +75,7 @@ export const MainCardContainer = styled(Card)(({ theme }) => ({
     position: "sticky",
     bottom: 0,
     background: "#fff",
-    zIndex: 1,
+    zIndex: 2,
     marginTop: "auto",
     marginBottom: "2%",
     justifyContent: "center",
