@@ -25,7 +25,7 @@ function LoginHeader() {
           sx={{
             flexGrow: 1,
             whiteSpace: isMobile ? "normal" : "nowrap",
-            fontSize: isMobile ? "1.5rem" : "2rem",
+            fontSize: isMobile ? "1.25rem" : "2rem",
           }}
         >
           {isMobile ? (
