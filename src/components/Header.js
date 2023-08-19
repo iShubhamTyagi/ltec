@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { AppBar, Toolbar, Typography, Box, useMediaQuery } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
-import LungsIcon from "./resources/lungs.png";
+import LungsIcon from "./resources/ltec_icon.png";
 
 function Header({ userSelection, progress, updateTimer }) {
   const isMobile = useMediaQuery("(max-width: 600px)");

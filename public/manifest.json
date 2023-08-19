@@ -1,19 +1,19 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "LTEC",
+  "name": "Lung Transplant Eligibility Calculator",
   "icons": [
     {
-      "src": "./../src/components/resources/lungs.png",
+      "src": "./../src/components/resources/ltec_icon.png",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "./../src/components/resources/lungs.png",
+      "src": "./../src/components/resources/ltec_icon.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "./../src/components/resources/lungs.png",
+      "src": "./../src/components/resources/ltec_icon.png",
       "type": "image/png",
       "sizes": "512x512"
     }
