@@ -19,7 +19,7 @@ function Footer() {
       }}
     >
       <Typography variant="body2" color="textSecondary" align="center">
-        &copy; 2023 Lung Transplant Eligibility Calculator - 1.0.18
+        &copy; 2023 Lung Transplant Eligibility Calculator - 1.0.19
         <br />
         Dr. Rahul Tyagi
       </Typography>

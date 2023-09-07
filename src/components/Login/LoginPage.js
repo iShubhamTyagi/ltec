@@ -25,8 +25,8 @@ function LoginPage({ onLogin }) {
 
   const handleLogin = () => {
     setLoading(true);
-    if (username && password === "123") {
-      setError(null); // Clear the error on successful login attempt
+    if (username && password === "Rahul#1418") {
+      setError(null);
       onLogin(username, password);
     } else {
       setError("Invalid username or password!");
@@ -43,7 +43,7 @@ function LoginPage({ onLogin }) {
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
     if (error) {
-      setError(null); // Clear the error when password is changed
+      setError(null);
     }
   };
 
@@ -65,7 +65,7 @@ function LoginPage({ onLogin }) {
           type="password"
           label="Password"
           value={password}
-          onChange={handlePasswordChange} // Use the custom handler for password change
+          onChange={handlePasswordChange}
         />
         <ButtonsContainerOuter container>
           <LoginButton
