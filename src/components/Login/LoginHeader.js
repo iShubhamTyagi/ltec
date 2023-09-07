@@ -20,6 +20,7 @@ function LoginHeader() {
 
         <Typography
           variant={isMobile ? "h8" : "h5"}
+          fontWeight={"bold"}
           component="div"
           textAlign="left"
           sx={{
