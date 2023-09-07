@@ -52,6 +52,7 @@ function Header({ userSelection, progress, updateTimer }) {
           variant={isMobile ? "h6" : "h5"}
           component="div"
           textAlign="left"
+          fontWeight={"bold"}
           sx={{
             flexGrow: 1,
             whiteSpace: isMobile ? "normal" : "nowrap",
