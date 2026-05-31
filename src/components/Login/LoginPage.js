@@ -16,7 +16,6 @@ const LoginButton = styled(Button)({
   background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
 });
 
-
 function LoginPage({ onLogin }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -25,7 +24,7 @@ function LoginPage({ onLogin }) {
 
   const handleLogin = () => {
     setLoading(true);
-    if (username && password === "Rahul#1418") {
+    if (username && password === "LT@1234") {
       setError(null);
       onLogin(username, password);
     } else {
@@ -77,8 +76,12 @@ function LoginPage({ onLogin }) {
             Login
           </LoginButton>
         </ButtonsContainerOuter>
-        <div style={{ height: '20px' }}>
-          {error && <Typography color="error" variant="h6">{error}</Typography>}
+        <div style={{ height: "20px" }}>
+          {error && (
+            <Typography color="error" variant="h6">
+              {error}
+            </Typography>
+          )}
         </div>
       </MainCardContent>
     </MainCardContainer>
