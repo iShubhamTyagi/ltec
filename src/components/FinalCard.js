@@ -79,6 +79,7 @@ function FinalCard({ handleClear, age, id, sex, verdicts, overallVerdict }) {
                   <div>
                     Verdict :{" "}
                     <span
+                      data-testid="overall-verdict"
                       style={{
                         marginLeft: "2px",
                         color: overallVerdict === "Eligible" ? "green" : "red",
