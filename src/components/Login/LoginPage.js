@@ -1,20 +1,5 @@
 import React, { useState } from "react";
-import { styled } from "@mui/material/styles";
-import { TextField, Button, Typography } from "@mui/material";
-import {
-  MainCardContainer,
-  MainCardContent,
-  MainCardTitle,
-  ButtonsContainerOuter,
-} from "./../StyledComponents";
-
-const LoginField = styled(TextField)({
-  marginBottom: "16px",
-});
-
-const LoginButton = styled(Button)({
-  background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
-});
+import LungsIcon from "./../resources/ltec_icon.png";
 
 function LoginPage({ onLogin }) {
   const [username, setUsername] = useState("");
@@ -41,50 +26,48 @@ function LoginPage({ onLogin }) {
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
-    if (error) {
-      setError(null);
-    }
+    if (error) setError(null);
   };
 
   return (
-    <MainCardContainer onKeyDown={handleKeyPress}>
-      <MainCardContent>
-        <MainCardTitle variant="h5">Login</MainCardTitle>
-
-        <LoginField
-          fullWidth
-          variant="outlined"
-          label="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <LoginField
-          fullWidth
-          variant="outlined"
-          type="password"
-          label="Password"
-          value={password}
-          onChange={handlePasswordChange}
-        />
-        <ButtonsContainerOuter container>
-          <LoginButton
-            disabled={loading}
-            className="previous-next-button"
-            variant="contained"
-            onClick={handleLogin}
-          >
-            Login
-          </LoginButton>
-        </ButtonsContainerOuter>
-        <div style={{ height: "20px" }}>
-          {error && (
-            <Typography color="error" variant="h6">
-              {error}
-            </Typography>
-          )}
+    <div className="login-wrap" onKeyDown={handleKeyPress}>
+      <div className="card login-card">
+        <div className="login-mark">
+          <img src={LungsIcon} alt="LTEC" />
         </div>
-      </MainCardContent>
-    </MainCardContainer>
+        <h1>Sign in</h1>
+        <p className="sub">Enter your credentials to continue</p>
+        <div className="fields">
+          <div className="field">
+            <label htmlFor="login-username">Username</label>
+            <input
+              id="login-username"
+              className="field-input"
+              type="text"
+              placeholder="Enter your username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </div>
+          <div className="field">
+            <label htmlFor="login-password">Password</label>
+            <input
+              id="login-password"
+              className="field-input"
+              type="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={handlePasswordChange}
+            />
+          </div>
+        </div>
+        <button className="btn btn-primary" disabled={loading} onClick={handleLogin}>
+          Sign In
+        </button>
+        <div className="login-err">{error}</div>
+      </div>
+    </div>
   );
 }
+
 export default LoginPage;

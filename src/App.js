@@ -17,18 +17,16 @@ function App() {
 
   return (
     <UserContext.Provider value={{ ...userDetails, setUserDetails }}>
-      <div className="App">
-        <div style={{ flex: "1 0 auto" }}>
-          {loggedIn ? (
-            <MainCard />
-          ) : (
-            <>
-              <LoginHeader />
-              <LoginPage onLogin={handleLogin} />
-              <Footer />
-            </>
-          )}
-        </div>
+      <div className="app-shell">
+        {loggedIn ? (
+          <MainCard />
+        ) : (
+          <>
+            <LoginHeader />
+            <LoginPage onLogin={handleLogin} />
+            <Footer />
+          </>
+        )}
       </div>
     </UserContext.Provider>
   );

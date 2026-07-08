@@ -1,142 +1,91 @@
 import React from "react";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import { MainCardContainer, MainCardContent } from "./StyledComponents";
 
-function VerdictRow({ prefix, verdict }) {
-  let textColor = "black";
-  if (
-    verdict &&
-    (verdict.toLowerCase() === "eligible" || verdict.toLowerCase() === "no")
-  ) {
-    textColor = "green";
-  } else if (
-    verdict &&
-    (verdict.toLowerCase() === "ineligible" || verdict.toLowerCase() === "yes")
-  ) {
-    textColor = "red";
-  }
+const CARD_LABELS = {
+  "1": "For Referral:",
+  "2": "For Listing:",
+  "3": "Contra Indications (Absolute):",
+  "4": "Contra Indications (Relative):",
+};
 
-  return (
-    <tr>
-      <td style={styles.prefixCell}>{prefix}</td>
-      <td style={{ ...styles.tableCell, color: textColor }}>
-        {verdict ? verdict.toUpperCase() : ""}
-      </td>
-    </tr>
-  );
+function verdictClass(verdict) {
+  if (!verdict) return "";
+  const v = verdict.toLowerCase();
+  return v === "eligible" || v === "no" ? "pos" : "neg";
 }
 
 function FinalCard({ handleClear, age, id, sex, verdicts, overallVerdict }) {
   const isVerdictsAvailable = verdicts && Object.keys(verdicts).length > 0;
+  const heroClass = verdictClass(overallVerdict);
 
   return (
-    <MainCardContainer>
-      <MainCardContent>
-        <Typography variant="h6" component="div" gutterBottom>
-          Thank you!
-        </Typography>
-        <div style={styles.tableContainer}>
-          <table style={{ borderCollapse: "collapse", width: "100%" }}>
-            <colgroup>
-              <col style={{ width: "30%" }} />
-              <col />
-            </colgroup>
-            <tbody>
-              <tr>
-                <td style={{ ...styles.prefixCell, textAlign: "left" }}>
-                  Age:
-                </td>
-                <td style={{ ...styles.tableCell, textAlign: "left" }}>
-                  {age}
-                </td>
-              </tr>
-              <tr>
-                <td style={{ ...styles.prefixCell, textAlign: "left" }}>
-                  ID:
-                </td>
-                <td style={{ ...styles.tableCell, textAlign: "left" }}>
-                  {id}
-                </td>
-              </tr>
-              <tr>
-                <td style={{ ...styles.prefixCell, textAlign: "left" }}>
-                  Sex:
-                </td>
-                <td style={{ ...styles.tableCell, textAlign: "left" }}>
-                  {sex}
-                </td>
-              </tr>
-              <tr>
-                <td
-                  style={{
-                    ...styles.prefixCell,
-                    fontWeight: "bold",
-                    textAlign: "center",
-                  }}
-                  colSpan={2}
-                >
-                  <div>
-                    Verdict :{" "}
-                    <span
-                      data-testid="overall-verdict"
-                      style={{
-                        marginLeft: "2px",
-                        color: overallVerdict === "Eligible" ? "green" : "red",
-                      }}
-                    >
-                      {overallVerdict ? overallVerdict.toUpperCase() : ""}
-                    </span>
-                  </div>
-                </td>
-              </tr>
-              {isVerdictsAvailable &&
-                Object.entries(verdicts).map(([cardIndex, verdict]) => (
-                  <VerdictRow
-                    key={cardIndex}
-                    prefix={
-                      cardIndex === "1"
-                        ? "For Referral:"
-                        : cardIndex === "2"
-                        ? "For Listing:"
-                        : cardIndex === "3"
-                        ? "Contra Indications (Absolute):"
-                        : cardIndex === "4"
-                        ? "Contra Indications (Relative):"
-                        : ""
-                    }
-                    verdict={verdict}
-                  />
-                ))}
-            </tbody>
-          </table>
+    <main className="page page-final">
+      <div className="final card">
+        <div className={`final-hero${heroClass ? " " + heroClass : ""}`}>
+          <div className="fh-eyebrow">Assessment Complete</div>
+          <div className="fh-icon">
+            {heroClass === "pos" ? (
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            ) : (
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            )}
+          </div>
+          <div
+            className="fh-verdict"
+            data-testid="overall-verdict"
+          >
+            {overallVerdict ? overallVerdict.toUpperCase() : ""}
+          </div>
+          <p className="fh-note">
+            {heroClass === "pos"
+              ? "Patient meets criteria for lung transplant eligibility."
+              : "Patient does not meet all criteria at this time."}
+          </p>
         </div>
-        <div style={{ marginTop: "20px", textAlign: "center" }}>
-          <Button variant="outlined" color="primary" onClick={handleClear}>
+
+        <div className="final-meta">
+          <div className="fm">
+            <div className="k">AGE</div>
+            <div className="v">{age}</div>
+          </div>
+          <div className="fm">
+            <div className="k">PATIENT ID</div>
+            <div className="v mono">{id}</div>
+          </div>
+          <div className="fm">
+            <div className="k">SEX</div>
+            <div className="v">{sex}</div>
+          </div>
+        </div>
+
+        {isVerdictsAvailable && (
+          <div className="final-breakdown">
+            <h3>Assessment Breakdown</h3>
+            {Object.entries(verdicts).map(([cardIndex, verdict]) => {
+              const vc = verdictClass(verdict);
+              return (
+                <div key={cardIndex} className="brk-row">
+                  <span className="lbl">{CARD_LABELS[cardIndex] || cardIndex}</span>
+                  <span className={`brk-pill${vc ? " " + vc : ""}`}>
+                    {vc === "pos" ? "✓" : "✗"}&nbsp;{verdict ? verdict.toUpperCase() : ""}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        <div className="final-actions">
+          <button className="btn btn-ghost" onClick={handleClear}>
             Start Again
-          </Button>
+          </button>
         </div>
-      </MainCardContent>
-    </MainCardContainer>
+      </div>
+    </main>
   );
 }
 
 export default FinalCard;
-
-const styles = {
-  prefixCell: {
-    border: "1px solid black",
-    padding: "8px",
-    whiteSpace: "nowrap",
-    textAlign: "left",
-  },
-  tableCell: {
-    border: "1px solid black",
-    padding: "8px",
-    textAlign: "left",
-  },
-  tableContainer: {
-    maxWidth: "80%",
-    margin: "0 auto",
-  },
-};

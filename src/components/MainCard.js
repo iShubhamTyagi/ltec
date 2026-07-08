@@ -1,30 +1,17 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Grid } from "@mui/material";
-import {
-  TextField,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-} from "@mui/material";
-import { FormControlLabel, Radio } from "@mui/material";
-
 import questionCardSequences from "./QuestionCardSequences";
 import Buttons from "./Buttons";
 import FinalCard from "./FinalCard";
 import Header from "./Header";
 import Footer from "./Footer";
-
-import {
-  MainCardContainer,
-  MainCardContent,
-  MainCardTitle,
-  RadioGroupContainer,
-  ButtonsContainerOuter,
-} from "./StyledComponents";
-
 import storeData from './DataStorage';
 import { UserContext } from "./UserContext";
+
+const DISEASE_SUBTITLES = [
+  "Chronic Obstructive Pulmonary Disease",
+  "Interstitial Lung Disease",
+  "Chronic Suppurative Lung Disease",
+];
 
 const initialState = {
   selectedSequence: null,
@@ -35,7 +22,7 @@ const initialState = {
   age: "",
   id: "",
   sex: "",
-  timer:0,
+  timer: 0,
 };
 
 function MainCard() {
@@ -43,7 +30,7 @@ function MainCard() {
   const [isFinalCardShown, setIsFinalCardShown] = useState(false);
   const [currentVerdicts, setCurrentVerdicts] = useState({});
   const [overallVerdict, setOverallVerdict] = useState({});
-  const [timer, setTimer] = useState(0); 
+  const [timer, setTimer] = useState(0);
   const { username, password } = useContext(UserContext);
 
   const {
@@ -75,7 +62,6 @@ function MainCard() {
   const calculateOverallVerdict = (verdicts) => {
     const eligibleVerdicts = Object.values(verdicts).slice(0, 2);
     const yesNoVerdicts = Object.values(verdicts).slice(2, 4);
-
     if (eligibleVerdicts.length === 2 && yesNoVerdicts.length === 2) {
       if (
         eligibleVerdicts.every((verdict) => verdict === "Eligible") &&
@@ -104,8 +90,8 @@ function MainCard() {
     setIsFinalCardShown(false);
   };
 
-  const handleSelection = (event) => {
-    const sequence = Number(event.target.value);
+  const handleSelection = (index) => {
+    const sequence = Number(index);
     setState((prevState) => ({
       ...prevState,
       selectedSequence: sequence,
@@ -127,7 +113,6 @@ function MainCard() {
       const updatedAnswers = { ...prevState.answers };
       const key = `${currentCardIndex}-${index}`;
       updatedAnswers[key] = answer;
-
       return { ...prevState, answers: updatedAnswers };
     });
   };
@@ -140,7 +125,6 @@ function MainCard() {
         [cardIndex]: verdict,
       },
     }));
-
     setCurrentVerdicts((prevVerdicts) => ({
       ...prevVerdicts,
       [cardIndex]: verdict,
@@ -149,7 +133,6 @@ function MainCard() {
 
   useEffect(() => {
     setCurrentVerdicts(verdicts);
-    console.log(verdicts);
   }, [verdicts]);
 
   const updateTimer = (timer) => {
@@ -157,21 +140,13 @@ function MainCard() {
   };
 
   useEffect(() => {
-    if (
-      currentCardIndex > questionCardSequences[selectedSequence]?.cards.length
-    ) {
+    if (currentCardIndex > questionCardSequences[selectedSequence]?.cards.length) {
       setIsFinalCardShown(true);
     }
   }, [currentCardIndex, selectedSequence, answers]);
 
   useEffect(() => {
-    setCurrentVerdicts(verdicts);
-  }, [verdicts]);
-
-
-  useEffect(() => {
     if (isFinalCardShown && timer !== 0) {
-      console.log(" MainCard Logs ----->" +  username, password);
       storeData(
         selectedSequence,
         age,
@@ -190,12 +165,11 @@ function MainCard() {
 
   const totalCards = questionCardSequences[selectedSequence]?.cards.length || 1;
   const progress = ((currentCardIndex - 1) / totalCards) * 100;
-
   const isFormValid = age && id && sex;
 
   if (isFinalCardShown) {
     return (
-      <>
+      <div className="app-shell">
         <Header userSelection={userSelection} progress={100} updateTimer={updateTimer} />
         <FinalCard
           handleClear={handleClear}
@@ -206,103 +180,147 @@ function MainCard() {
           overallVerdict={overallVerdict}
         />
         <Footer />
-      </>
+      </div>
     );
   }
 
   return (
-    <>
+    <div className="app-shell">
       <Header
         userSelection={userSelection}
         progress={Math.min(progress, 100)}
-        timer={timer}
+        updateTimer={updateTimer}
       />
-      <MainCardContainer>
-        <MainCardContent>
-          {selectedSequence === null ? (
-            <>
-              <Grid>
-              <MainCardTitle variant="h6" component="div">
-                Enter Patient Details:
-              </MainCardTitle>
-                <div style={{ marginBottom: "16px" }}>
-                  <TextField
-                    label="Age"
-                    value={age}
-                    onChange={(event) => handleInputChange(event, "age")}
-                    style={{ marginBottom: "8px" }}
-                  />
+
+      <main className="page">
+        {selectedSequence === null ? (
+          <>
+            <div className="intro">
+              <h1>Patient Assessment</h1>
+              <p>Enter patient details, then select the primary diagnosis to begin.</p>
+            </div>
+            <div className="intake">
+              {/* Step 1 — Patient Details */}
+              <div className="card intake-card">
+                <div className="section-head">
+                  <span className="n">1</span>
+                  <h2>Patient Details</h2>
+                  <span className="hint">All fields required</span>
                 </div>
-                <div style={{ marginBottom: "16px" }}>
-                  <TextField
-                    label="ID"
-                    value={id}
-                    onChange={(event) => handleInputChange(event, "id")}
-                    style={{ marginBottom: "8px" }}
-                  />
-                </div>
-                <div style={{ marginBottom: "16px" }}>
-                  <FormControl style={{ width: "170px" }}>
-                    <InputLabel>Sex</InputLabel>
-                    <Select
-                    label="sex"
+                <div className="intake-grid">
+                  <div className="field">
+                    <label htmlFor="patient-age">Age</label>
+                    <input
+                      id="patient-age"
+                      className="field-input"
+                      type="text"
+                      placeholder="e.g. 58"
+                      value={age}
+                      onChange={(event) => handleInputChange(event, "age")}
+                    />
+                  </div>
+                  <div className="field">
+                    <label htmlFor="patient-id">ID</label>
+                    <input
+                      id="patient-id"
+                      className="field-input"
+                      type="text"
+                      placeholder="Patient ID"
+                      value={id}
+                      onChange={(event) => handleInputChange(event, "id")}
+                    />
+                  </div>
+                  <div className="field">
+                    <label htmlFor="patient-sex">Sex</label>
+                    <select
+                      id="patient-sex"
+                      className="field-select"
                       value={sex}
                       onChange={(event) => handleInputChange(event, "sex")}
                     >
-                      <MenuItem value="Male">Male</MenuItem>
-                      <MenuItem value="Female">Female</MenuItem>
-                      <MenuItem value="Other">Other</MenuItem>
-                    </Select>
-                  </FormControl>
-                </div>
-              </Grid>
-              <MainCardTitle variant="h6" component="div">
-                Choose Patient's Disease:
-              </MainCardTitle>
-              <RadioGroupContainer row onChange={handleSelection}>
-                {questionCardSequences.map((sequence, index) => (
-                  <FormControlLabel
-                    key={index}
-                    value={index.toString()}
-                    control={<Radio disabled={!isFormValid} />}
-                    label={sequence.label}
-                  />
-                ))}
-              </RadioGroupContainer>
-            </>
-          ) : (
-            <>
-              {questionCardSequences[selectedSequence].cards.map(
-                (card, index) => (
-                  <div
-                    key={index}
-                    style={{
-                      display:
-                        index === currentCardIndex - 1 ? "block" : "none",
-                    }}
-                  >
-                    {React.cloneElement(card, {
-                      answers,
-                      setAnswers,
-                      setVerdict,
-                      currentCardIndex,
-                    })}
+                      <option value="">Select…</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                      <option value="Other">Other</option>
+                    </select>
                   </div>
-                )
-              )}
-            </>
-          )}
-        </MainCardContent>
-        <ButtonsContainerOuter>
-          <Buttons
-            handleClear={handleClear}
-            handlePrevious={handlePrevious}
-            handleNext={handleNext}
-          />
-        </ButtonsContainerOuter>
-      </MainCardContainer>
+                </div>
+              </div>
+
+              {/* Step 2 — Disease Selection */}
+              <div className="card intake-card">
+                <div className="section-head">
+                  <span className="n">2</span>
+                  <h2>Choose Patient's Disease</h2>
+                </div>
+                <div className="disease-grid">
+                  {questionCardSequences.map((sequence, index) => (
+                    <label
+                      key={index}
+                      className={`disease-card${selectedSequence === index ? " sel" : ""}${!isFormValid ? " disabled" : ""}`}
+                    >
+                      <input
+                        type="radio"
+                        name="disease"
+                        value={String(index)}
+                        disabled={!isFormValid}
+                        checked={selectedSequence === index}
+                        onChange={() => handleSelection(index)}
+                        style={{
+                          position: "absolute",
+                          opacity: 0,
+                          width: 0,
+                          height: 0,
+                        }}
+                      />
+                      <div className="dc-name">{sequence.label}</div>
+                      <div className="dc-sub">{DISEASE_SUBTITLES[index]}</div>
+                      <div className="dc-check">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                          <polyline points="20 6 9 17 4 12" />
+                        </svg>
+                      </div>
+                    </label>
+                  ))}
+                </div>
+                {!isFormValid && (
+                  <div className="intake-lock">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                    </svg>
+                    Fill patient details above to enable disease selection.
+                  </div>
+                )}
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            {questionCardSequences[selectedSequence].cards.map((card, index) => (
+              <div
+                key={index}
+                style={{ display: index === currentCardIndex - 1 ? "block" : "none" }}
+              >
+                {React.cloneElement(card, {
+                  answers,
+                  setAnswers,
+                  setVerdict,
+                  currentCardIndex,
+                })}
+              </div>
+            ))}
+          </>
+        )}
+
+        <Buttons
+          handleClear={handleClear}
+          handlePrevious={handlePrevious}
+          handleNext={handleNext}
+        />
+      </main>
+
       <Footer />
-    </>
+    </div>
   );
 }
 
