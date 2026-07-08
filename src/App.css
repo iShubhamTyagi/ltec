@@ -131,33 +131,56 @@ body {
 }
 .hdr-inner {
   max-width: 1180px; margin: 0 auto;
-  padding: 0 24px; height: 68px;
-  display: flex; align-items: center; gap: 14px;
+  padding: 10px 24px; min-height: 68px;
+  display: flex; flex-wrap: nowrap; align-items: center; gap: 14px;
 }
-.hdr-logo { width: 34px; height: 34px; flex: 0 0 auto; display: grid; place-items: center; }
+.hdr-logo { width: 34px; height: 34px; flex: 0 0 auto; display: grid; place-items: center; margin-right: 4px; }
 .hdr-logo img { width: 100%; height: 100%; object-fit: contain; }
-.hdr-title { display: flex; flex-direction: column; line-height: 1.05; min-width: 0; }
-.hdr-title .t1 { font-weight: 700; font-size: 1.18rem; letter-spacing: -.01em; white-space: nowrap; }
-.hdr-title .t2 { font-size: .72rem; color: var(--header-sub); font-weight: 500; letter-spacing: .02em; }
-.hdr-spacer { flex: 1 1 auto; }
+.hdr-title { display: flex; flex-direction: column; line-height: 1.05; min-width: 0; overflow: hidden; }
+.hdr-title .t1 { font-weight: 700; font-size: 1.18rem; letter-spacing: -.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hdr-title .t2 { font-size: .72rem; color: var(--header-sub); font-weight: 500; letter-spacing: .02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* Short "LTEC" mark — hidden on desktop, shown in place of the full
+   title/subtitle once the header gets too tight to carry the full name. */
+.hdr-title .t1-short { display: none; font-weight: 700; font-size: 1.1rem; letter-spacing: .01em; white-space: nowrap; }
+/* Small full-name line under "LTEC" on mobile, forced into two explicit
+   2-word lines ("Lung Transplant" / "Eligibility Calculator") rather than
+   left to natural greedy wrapping (which produces an uneven 3+1 split).
+   Each line only wraps again as a last-resort fallback if it truly doesn't
+   fit, so the name is always fully visible, never clipped. */
+.hdr-title .t1-short-sub { display: none; flex-direction: column; font-size: .62rem; color: var(--header-sub); font-weight: 500; letter-spacing: .01em; line-height: 1.3; margin-top: 2px; }
+.hdr-title .t1-short-sub-line { white-space: normal; overflow-wrap: break-word; }
+.hdr-spacer { display: none; }
 
-.hdr-meta { display: flex; align-items: center; gap: 18px; }
+/* The header is always exactly one line — disease name, progress, and timer
+   must never wrap or scroll horizontally. Disease/timer are rigid (never
+   truncated); the progress bar is the only element that flexes, shrinking
+   down to a thin sliver on very narrow screens instead of forcing a wrap.
+   min-width is deliberately left at its default (auto, not 0): hdr-meta's
+   rigid children (disease pill, timer) can't shrink, so the browser must
+   know it can't compress this box below their combined width either — with
+   min-width:0 the outer flex row would shrink hdr-meta past what its own
+   children need, and with justify-content:flex-end that overflow spills
+   left into the title instead of clipping safely. */
+.hdr-meta { display: flex; flex-wrap: nowrap; align-items: center; justify-content: flex-end; gap: 18px; flex: 1 1 auto; }
 .hdr-disease {
   display: inline-flex; align-items: center; gap: 8px;
   font-weight: 600; font-size: .9rem;
   background: rgba(255,255,255,.13);
   border: 1px solid rgba(255,255,255,.22);
   padding: 6px 13px; border-radius: var(--r-pill);
+  flex: 0 0 auto;
 }
 .hdr-disease .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex: 0 0 auto; }
+.hdr-disease .label-full { white-space: nowrap; }
 
-.hdr-progress { display: flex; flex-direction: column; gap: 6px; width: 168px; }
-.hdr-progress .pbar-top { display: flex; justify-content: space-between; font-size: .72rem; color: var(--header-sub); font-weight: 600; letter-spacing: .03em; }
+.hdr-progress { display: flex; flex-direction: column; gap: 6px; flex: 1 1 0; min-width: 34px; max-width: 168px; }
+.hdr-progress .pbar-top { position: relative; display: flex; min-height: 1.4em; font-size: .72rem; color: var(--header-sub); font-weight: 600; letter-spacing: .03em; white-space: nowrap; overflow: hidden; }
+.hdr-progress .pbar-top span:last-child { position: absolute; left: 50%; top: 0; transform: translateX(-50%); }
 .hdr-progress .pbar { height: 6px; border-radius: 999px; background: rgba(255,255,255,.22); overflow: hidden; }
 .hdr-progress .pbar i { display: block; height: 100%; background: var(--accent); border-radius: 999px; transition: width .35s cubic-bezier(.4,0,.2,1); }
 
-.hdr-timer { display: inline-flex; align-items: center; gap: 7px; font-family: var(--font-mono); font-size: 1rem; font-weight: 500; letter-spacing: .02em; }
-.hdr-timer svg { opacity: .8; }
+.hdr-timer { display: inline-flex; align-items: center; gap: 7px; font-family: var(--font-mono); font-size: 1rem; font-weight: 500; letter-spacing: .02em; white-space: nowrap; flex: 0 0 auto; }
+.hdr-timer svg { opacity: .8; flex: 0 0 auto; }
 
 /* ======================== LAYOUT ======================== */
 .page { flex: 1 1 auto; width: 100%; max-width: 1180px; margin: 0 auto; padding: 32px 24px 120px; }
@@ -168,6 +191,7 @@ body {
   border: var(--border-w) solid var(--border);
   border-radius: var(--r-card);
   box-shadow: var(--shadow-md);
+  overflow: hidden;
 }
 
 /* ======================== FOOTER ======================== */
@@ -356,22 +380,57 @@ body {
 .intro p { color: var(--text-muted); margin: 0; font-size: .98rem; max-width: 560px; }
 
 /* ======================== RESPONSIVE ======================== */
+@media (max-width: 900px) {
+  /* The "PROGRESS" caption needs ~63px clear to its right before it collides
+     with the centered percentage; the bar can start shrinking below its
+     168px max well above the 720px breakpoint (title/meta share the row
+     with a shrinking title), so this caption is hidden on its own,
+     earlier, wider breakpoint rather than tied to the mobile cutoff. */
+  .hdr-progress .pbar-top span:first-child { display: none; }
+}
 @media (max-width: 860px) {
   .intake-grid { grid-template-columns: 1fr 1fr; }
   .disease-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 720px) {
-  .hdr-inner { padding: 0 16px; height: 60px; gap: 10px; }
-  .hdr-title .t1 { font-size: 1.02rem; }
-  .hdr-title .t2 { display: none; }
-  .hdr-disease .label-full { display: none; }
-  .hdr-progress { width: 96px; }
-  .hdr-meta { gap: 12px; }
+  /* Full app title/subtitle collapse to the short "LTEC" mark on mobile so
+     the disease indicator, progress, and timer always have room to render
+     fully — see CLAUDE.md UI notes. */
+  .hdr-title .t1, .hdr-title .t2 { display: none; }
+  .hdr-title .t1-short { display: block; }
+  .hdr-title .t1-short-sub { display: flex; }
+  .hdr-inner { padding: 10px 16px; gap: 10px; }
+  .hdr-meta { gap: 8px; }
+  .hdr-progress { max-width: 120px; }
   .page { padding: 20px 14px 110px; }
   :root { --card-pad: 20px; }
   .qcard-title { font-size: 1.25rem; }
   .intake-grid { grid-template-columns: 1fr; }
-  .final-meta { grid-template-columns: 1fr; }
+
+  /* Final (results) screen has no sticky navbar below it, and must fit one
+     mobile viewport without scrolling — so it skips the generous page
+     padding and shrinks the hero/meta/breakdown sections instead of
+     stacking them. Age/id/sex stay 3-across rather than 3 stacked rows. */
+  .page-final { padding: 12px 14px 16px; }
+  .final-hero { padding: 16px var(--card-pad) 14px; }
+  .final-hero .fh-eyebrow { margin-bottom: 6px; font-size: .68rem; }
+  .final-hero .fh-icon { width: 40px; height: 40px; margin: 0 auto 8px; }
+  .final-hero .fh-icon svg { width: 20px; height: 20px; }
+  .final-hero .fh-verdict { font-size: 1.5rem; }
+  .final-hero .fh-note { margin-top: 4px; font-size: .78rem; }
+
+  .final-meta .fm { padding: 8px 10px; }
+  .final-meta .fm .k { font-size: .6rem; margin-bottom: 2px; }
+  .final-meta .fm .v { font-size: .85rem; }
+
+  .final-breakdown { padding: 12px var(--card-pad); }
+  .final-breakdown h3 { margin: 0 0 6px; font-size: .68rem; }
+  .brk-row { padding: 7px 0; gap: 10px; }
+  .brk-row .lbl { font-size: .8rem; }
+  .brk-pill { padding: 3px 10px; font-size: .7rem; }
+
+  .final-actions { padding: 0 var(--card-pad) 14px; }
+  .final-actions .btn { padding-top: 9px; padding-bottom: 9px; }
 }
 @media (max-width: 560px) {
   .qrow { flex-direction: column; align-items: stretch; gap: 12px; }
@@ -379,6 +438,23 @@ body {
   .seg { display: grid; grid-template-columns: repeat(3, 1fr); width: 100%; }
   .seg-btn { min-width: 0; }
   .navbar .btn { flex: 1 1 auto; }
-  .hdr-title .t1 { font-size: .95rem; }
+  .hdr-progress { max-width: 90px; }
+}
+@media (max-width: 400px) {
+  .hdr-inner { padding: 10px 12px; gap: 6px; }
+  .hdr-meta { gap: 4px; }
+  .hdr-progress { max-width: 60px; }
+  .hdr-timer svg { display: none; }
+  /* Every extra pixel here goes to the wrapped full-name line under "LTEC"
+     (see .t1-short-sub) so it keeps breaking at word boundaries instead of
+     mid-word, even at common ~360px device widths. */
+  .hdr-logo { width: 28px; height: 28px; margin-right: 2px; }
+  .hdr-disease { padding: 6px 9px; }
+}
+@media (max-width: 357px) {
+  /* Below this width there isn't room for a full, unclipped "LTEC" next to
+     the disease pill/progress/timer (which never shrink) — better to drop
+     the mark entirely than show it cut down to a stray letter or two. */
+  .hdr-title { display: none; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }

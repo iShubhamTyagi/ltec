@@ -1,44 +1,19 @@
 import React from "react";
-import { AppBar, Toolbar, Typography, useMediaQuery } from "@mui/material";
 import LungsIcon from "./../resources/ltec_icon.png";
 
 function LoginHeader() {
-  const isMobile = useMediaQuery("(max-width: 600px)");
-
   return (
-    <AppBar position="sticky" sx={{ backgroundColor: "#0067B3" }}>
-      <Toolbar>
-        <img
-          src={LungsIcon}
-          alt="Lungs Icon"
-          style={{
-            width: isMobile ? 28 : 32,
-            height: isMobile ? 28 : 32,
-            marginRight: isMobile ? 8 : 15,
-          }}
-        />
-
-        <Typography
-          variant={isMobile ? "h8" : "h5"}
-          fontWeight={"bold"}
-          component="div"
-          textAlign="left"
-          sx={{
-            flexGrow: 1,
-            whiteSpace: isMobile ? "normal" : "nowrap",
-            fontSize: isMobile ? "1.25rem" : "2rem",
-          }}
-        >
-          {isMobile ? (
-            <>
-              Lung Transplant Eligibility Counter
-            </>
-          ) : (
-            "Lung Transplant Eligibility Calculator"
-          )}
-        </Typography>
-      </Toolbar>
-    </AppBar>
+    <header className="hdr">
+      <div className="hdr-inner">
+        <div className="hdr-logo">
+          <img src={LungsIcon} alt="Lungs Icon" />
+        </div>
+        <div className="hdr-title">
+          <span className="t1">Lung Transplant Eligibility Calculator</span>
+          <span className="t2">CLINICAL DECISION SUPPORT</span>
+        </div>
+      </div>
+    </header>
   );
 }
 

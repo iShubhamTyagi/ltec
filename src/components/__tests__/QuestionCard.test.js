@@ -130,15 +130,15 @@ describe('QuestionCard — eligibility verdict (cards 1-2)', () => {
 });
 
 // ── Contraindication cards (3 & 4) — verdict display ─────────────────────
-// The verdict table is the only <table> in QuestionCard; we scope queries
-// within it to avoid false matches from the "No"/"Yes" radio-button labels.
+// The verdict-display testid scopes queries to the verdict area, avoiding
+// false matches from "No"/"Yes" radio-button labels on each question row.
 describe('QuestionCard — contraindication verdict (cards 3-4)', () => {
   it('shows "No" (no CI) when all questions answered No', async () => {
     const user = userEvent.setup();
     render(<Wrapper questions={questionsForCardc1} title="Card" currentCardIndex={3} />);
     await answerAll(user, questionsForCardc1, 'No');
-    const table = screen.getByRole('table');
-    expect(within(table).getByText(/^no$/i)).toBeInTheDocument();
+    const vd = screen.getByTestId('verdict-display');
+    expect(within(vd).getByText(/^no$/i)).toBeInTheDocument();
   });
 
   it('shows "Yes" (CI present) when at least one question is Yes', async () => {
@@ -150,16 +150,16 @@ describe('QuestionCard — contraindication verdict (cards 3-4)', () => {
     for (let i = 1; i < noRadios.length; i++) {
       await user.click(noRadios[i]);
     }
-    const table = screen.getByRole('table');
-    expect(within(table).getByText(/^yes$/i)).toBeInTheDocument();
+    const vd = screen.getByTestId('verdict-display');
+    expect(within(vd).getByText(/^yes$/i)).toBeInTheDocument();
   });
 
   it('shows "No" when all questions answered n.a. (card 3)', async () => {
     const user = userEvent.setup();
     render(<Wrapper questions={questionsForCardc1} title="Card" currentCardIndex={3} />);
     await answerAll(user, questionsForCardc1, 'n.a.');
-    const table = screen.getByRole('table');
-    expect(within(table).getByText(/^no$/i)).toBeInTheDocument();
+    const vd = screen.getByTestId('verdict-display');
+    expect(within(vd).getByText(/^no$/i)).toBeInTheDocument();
   });
 });
 
