@@ -5,7 +5,7 @@ function Footer() {
 
   return (
     <footer className="ftr">
-      © {year} Lung Transplant Eligibility Calculator - v1.1.0
+      © {year} Lung Transplant Eligibility Calculator - v1.2.0
       <br />
       Dr. Rahul Tyagi
     </footer>
