@@ -25,7 +25,7 @@ const initialState = {
   timer: 0,
 };
 
-function MainCard() {
+function MainCard({ onHome }) {
   const [state, setState] = useState(initialState);
   const [isFinalCardShown, setIsFinalCardShown] = useState(false);
   const [currentVerdicts, setCurrentVerdicts] = useState({});
@@ -170,7 +170,7 @@ function MainCard() {
   if (isFinalCardShown) {
     return (
       <div className="app-shell">
-        <Header userSelection={userSelection} progress={100} updateTimer={updateTimer} />
+        <Header userSelection={userSelection} progress={100} updateTimer={updateTimer} onHome={onHome} />
         <FinalCard
           handleClear={handleClear}
           age={age}
@@ -190,6 +190,7 @@ function MainCard() {
         userSelection={userSelection}
         progress={Math.min(progress, 100)}
         updateTimer={updateTimer}
+        onHome={onHome}
       />
 
       <main className="page">
