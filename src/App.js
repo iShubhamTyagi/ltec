@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
+import LandingPage from "./components/Landing/LandingPage";
 import LoginHeader from "./components/Login/LoginHeader";
 import LoginPage from "./components/Login/LoginPage";
 import MainCard from "./components/MainCard";
@@ -7,23 +8,30 @@ import Footer from "./components/Footer";
 import { UserContext } from './components/UserContext';
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
+  // "landing" | "auth" | "app" — landing is shown first; the existing
+  // login gate and its logic below are unchanged.
+  const [view, setView] = useState("landing");
   const [userDetails, setUserDetails] = useState({ username: null, password: null });
 
   const handleLogin = (username, password) => {
     setUserDetails({ username, password });
-    setLoggedIn(true);
+    setView("app");
   };
 
   return (
     <UserContext.Provider value={{ ...userDetails, setUserDetails }}>
       <div className="app-shell">
-        {loggedIn ? (
+        {view === "app" ? (
           <MainCard />
-        ) : (
+        ) : view === "auth" ? (
           <>
             <LoginHeader />
             <LoginPage onLogin={handleLogin} />
+            <Footer />
+          </>
+        ) : (
+          <>
+            <LandingPage onGetStarted={() => setView("auth")} />
             <Footer />
           </>
         )}
