@@ -466,23 +466,12 @@ body {
 .btn-on-dark { background: #ffffff; color: var(--primary-strong) !important; }
 .btn-on-dark:hover { background: #eef5fc; }
 
-.lp-nav {
-  position: sticky; top: 0; z-index: 30;
-  background: color-mix(in srgb, var(--surface) 92%, transparent);
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--border);
-}
-.lp-nav-inner {
-  max-width: 1180px; margin: 0 auto; padding: 14px 24px;
-  display: flex; align-items: center; justify-content: space-between; gap: 16px;
-}
-.lp-brand { display: flex; align-items: center; gap: 10px; background: none; border: none; padding: 0; cursor: default; min-width: 0; flex: 1 1 auto; }
-.lp-brand img { width: 30px; height: 30px; flex: 0 0 auto; }
-.lp-brand-full, .lp-brand-short { font-weight: 700; font-size: 1.1rem; letter-spacing: -.01em; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-/* Full product name on desktop/tablet; collapses to the short "LTEC" mark
-   on mobile (see the max-width: 640px rule below) so it never competes
-   with the "Open LTEC" button for space on a small screen. */
-.lp-brand-short { display: none; }
+/* The landing page's nav reuses the app's own .hdr (same blue gradient,
+   logo, and title/subtitle treatment, including its mobile collapse to the
+   short "LTEC" mark) so the handoff into Login/the tool is seamless rather
+   than jumping from a light marketing bar into a solid blue one. Only the
+   CTA button is landing-specific. */
+.hdr-cta { flex: 0 0 auto; margin-left: auto; }
 
 .lp-hero {
   max-width: 1180px; margin: 0 auto; padding: 64px 24px 56px;
@@ -572,8 +561,6 @@ body {
   .lp-objective-card { grid-template-columns: 1fr; text-align: left; }
 }
 @media (max-width: 640px) {
-  .lp-brand-full { display: none; }
-  .lp-brand-short { display: block; }
   .lp-hero h1 { font-size: 2.1rem; }
   .lp-hero-actions .btn { width: 100%; }
   .lp-hero-actions { flex-direction: column; align-items: stretch; }

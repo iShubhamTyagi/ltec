@@ -13,16 +13,25 @@ import XrayImage from "../resources/landing/lungs-xray.jpg";
 function LandingPage({ onGetStarted }) {
   return (
     <>
-      <header className="lp-nav">
-        <div className="lp-nav-inner">
-          <div className="lp-brand">
-            <img src={LungsIcon} alt="LTEC" />
-            <span className="lp-brand-full">Lung Transplant Eligibility Calculator</span>
-            <span className="lp-brand-short">LTEC</span>
+      <header className="hdr">
+        <div className="hdr-inner">
+          <div className="hdr-logo">
+            <img src={LungsIcon} alt="Lungs Icon" />
           </div>
-          <button className="btn btn-primary" onClick={onGetStarted}>
-            Open LTEC
-          </button>
+          <div className="hdr-title">
+            <span className="t1-short">LTEC</span>
+            <span className="t1-short-sub">
+              <span className="t1-short-sub-line">Lung Transplant</span>
+              <span className="t1-short-sub-line">Eligibility Calculator</span>
+            </span>
+            <span className="t1">Lung Transplant Eligibility Calculator</span>
+            <span className="t2">CLINICAL DECISION SUPPORT</span>
+          </div>
+          <div className="hdr-cta">
+            <button className="btn btn-on-dark" onClick={onGetStarted}>
+              Open LTEC
+            </button>
+          </div>
         </div>
       </header>
 
