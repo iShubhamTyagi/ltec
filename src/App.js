@@ -18,14 +18,16 @@ function App() {
     setView("app");
   };
 
+  const handleGoHome = () => setView("landing");
+
   return (
     <UserContext.Provider value={{ ...userDetails, setUserDetails }}>
       <div className="app-shell">
         {view === "app" ? (
-          <MainCard />
+          <MainCard onHome={handleGoHome} />
         ) : view === "auth" ? (
           <>
-            <LoginHeader />
+            <LoginHeader onHome={handleGoHome} />
             <LoginPage onLogin={handleLogin} />
             <Footer />
           </>
