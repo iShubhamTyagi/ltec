@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from './App';
 
@@ -87,11 +87,13 @@ describe('App — login gate', () => {
 describe('App — footer', () => {
   it('renders the footer on the landing screen', () => {
     render(<App />);
-    expect(screen.getByText(/dr\. rahul tyagi/i)).toBeInTheDocument();
+    const footer = screen.getByRole('contentinfo');
+    expect(within(footer).getByText(/shubham tyagi/i)).toBeInTheDocument();
   });
 
   it('renders the footer on the login screen', async () => {
     await renderAppAtLogin();
-    expect(screen.getByText(/dr\. rahul tyagi/i)).toBeInTheDocument();
+    const footer = screen.getByRole('contentinfo');
+    expect(within(footer).getByText(/shubham tyagi/i)).toBeInTheDocument();
   });
 });
