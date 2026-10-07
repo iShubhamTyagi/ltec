@@ -202,8 +202,21 @@ body {
 }
 
 /* ======================== FOOTER ======================== */
-.ftr { text-align: center; padding: 26px 16px 30px; color: var(--text-faint); font-size: .8rem; line-height: 1.6; border-top: 1px solid var(--border); background: var(--surface-2); }
-.ftr b { color: var(--text-muted); font-weight: 600; }
+.ftr { border-top: 1px solid var(--border); background: var(--surface-2); }
+.ftr-inner {
+  max-width: 1180px; margin: 0 auto; padding: 24px 24px;
+  display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+}
+.ftr-brand { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.ftr-brand img { width: 20px; height: 20px; flex: 0 0 auto; }
+.ftr-brand-name { font-weight: 700; font-size: .86rem; color: var(--text-muted); letter-spacing: .01em; }
+.ftr-meta { display: flex; align-items: center; gap: 8px; font-size: .78rem; color: var(--text-faint); flex: 0 0 auto; }
+.ftr-version { font-family: var(--font-mono); font-weight: 600; color: var(--text-muted); }
+.ftr-author { font-weight: 600; color: var(--text-muted); }
+.ftr-sep { color: var(--border-strong); }
+@media (max-width: 560px) {
+  .ftr-inner { flex-direction: column; text-align: center; padding: 22px 16px 26px; }
+}
 
 /* ======================== BUTTONS ======================== */
 .btn {
