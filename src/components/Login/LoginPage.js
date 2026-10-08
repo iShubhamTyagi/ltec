@@ -3,17 +3,17 @@ import LungsIcon from "./../resources/ltec_icon.png";
 
 function LoginPage({ onLogin }) {
   const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [hospital, setHospital] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const handleLogin = () => {
     setLoading(true);
-    if (username && password === "LT@1234") {
+    if (username && hospital) {
       setError(null);
-      onLogin(username, password);
+      onLogin(username, hospital);
     } else {
-      setError("Invalid username or password!");
+      setError("Please enter your name and hospital name!");
     }
     setLoading(false);
   };
@@ -24,8 +24,13 @@ function LoginPage({ onLogin }) {
     }
   };
 
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
+  const handleUsernameChange = (e) => {
+    setUsername(e.target.value);
+    if (error) setError(null);
+  };
+
+  const handleHospitalChange = (e) => {
+    setHospital(e.target.value);
     if (error) setError(null);
   };
 
@@ -35,34 +40,34 @@ function LoginPage({ onLogin }) {
         <div className="login-mark">
           <img src={LungsIcon} alt="LTEC" />
         </div>
-        <h1>Sign in</h1>
-        <p className="sub">Enter your credentials to continue</p>
+        <h1>Welcome</h1>
+        <p className="sub">Enter your details to continue</p>
         <div className="fields">
           <div className="field">
-            <label htmlFor="login-username">Username</label>
+            <label htmlFor="login-username">Your Name</label>
             <input
               id="login-username"
               className="field-input"
               type="text"
-              placeholder="Enter your username"
+              placeholder="Enter your name"
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={handleUsernameChange}
             />
           </div>
           <div className="field">
-            <label htmlFor="login-password">Password</label>
+            <label htmlFor="login-hospital">Hospital Name</label>
             <input
-              id="login-password"
+              id="login-hospital"
               className="field-input"
-              type="password"
-              placeholder="Enter your password"
-              value={password}
-              onChange={handlePasswordChange}
+              type="text"
+              placeholder="Enter your hospital name"
+              value={hospital}
+              onChange={handleHospitalChange}
             />
           </div>
         </div>
         <button className="btn btn-primary" disabled={loading} onClick={handleLogin}>
-          Sign In
+          Continue
         </button>
         <div className="login-err">{error}</div>
       </div>

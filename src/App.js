@@ -8,13 +8,12 @@ import Footer from "./components/Footer";
 import { UserContext } from './components/UserContext';
 
 function App() {
-  // "landing" | "auth" | "app" — landing is shown first; the existing
-  // login gate and its logic below are unchanged.
+  // "landing" | "auth" | "app" — landing is shown first.
   const [view, setView] = useState("landing");
-  const [userDetails, setUserDetails] = useState({ username: null, password: null });
+  const [userDetails, setUserDetails] = useState({ username: null, hospital: null });
 
-  const handleLogin = (username, password) => {
-    setUserDetails({ username, password });
+  const handleLogin = (username, hospital) => {
+    setUserDetails({ username, hospital });
     setView("app");
   };
 

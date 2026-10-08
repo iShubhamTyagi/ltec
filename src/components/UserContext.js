@@ -2,6 +2,6 @@ import React from 'react';
 
 export const UserContext = React.createContext({
   username: null,
-  password: null,
+  hospital: null,
   setUserDetails: () => {},
 });
