@@ -1,6 +1,6 @@
 import storeData from '../DataStorage';
 
-// storeData(selectedSequence, age, id, sex, answers, verdicts, overallVerdict, timer, username, password)
+// storeData(selectedSequence, age, id, sex, answers, verdicts, overallVerdict, timer, username, hospital)
 const VALID_ARGS = [
   0,                                                           // selectedSequence → COPD
   '55',                                                        // age
@@ -11,7 +11,7 @@ const VALID_ARGS = [
   'Ineligible',                                                // overallVerdict
   137,                                                         // timer (seconds)
   'dr.smith',                                                  // username
-  'LT@1234',                                                   // password
+  'City Hospital',                                             // hospital
 ];
 
 describe('DataStorage — storeData', () => {
@@ -102,17 +102,17 @@ describe('DataStorage — storeData', () => {
     expect(body.duration).toBe(137);
   });
 
-  // ── Credentials ───────────────────────────────────────────────────────────
+  // ── Submitter details ─────────────────────────────────────────────────────
   it('includes username in payload', () => {
     storeData(...VALID_ARGS);
     const body = JSON.parse(mockFetch.mock.calls[0][1].body);
     expect(body.username).toBe('dr.smith');
   });
 
-  it('includes password in payload', () => {
+  it('includes hospital in payload', () => {
     storeData(...VALID_ARGS);
     const body = JSON.parse(mockFetch.mock.calls[0][1].body);
-    expect(body.password).toBe('LT@1234');
+    expect(body.hospital).toBe('City Hospital');
   });
 
   // ── Timestamp ─────────────────────────────────────────────────────────────
@@ -141,7 +141,7 @@ describe('DataStorage — storeData', () => {
     ['overallVerdict',  [...VALID_ARGS.slice(0, 6), undefined, ...VALID_ARGS.slice(7)]],
     ['timer',           [...VALID_ARGS.slice(0, 7), undefined, ...VALID_ARGS.slice(8)]],
     ['username',        [...VALID_ARGS.slice(0, 8), undefined, VALID_ARGS[9]]],
-    ['password',        [...VALID_ARGS.slice(0, 9), undefined]],
+    ['hospital',        [...VALID_ARGS.slice(0, 9), undefined]],
   ])('does NOT call fetch when %s is undefined', (_field, args) => {
     storeData(...args);
     expect(mockFetch).not.toHaveBeenCalled();

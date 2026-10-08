@@ -8,7 +8,7 @@ function storeData(
   overallVerdict,
   timer,
   username,
-  password
+  hospital
 ) {
 
   if (
@@ -21,7 +21,7 @@ function storeData(
     overallVerdict !== undefined &&
     timer !== undefined  &&
     username !== undefined  &&
-    password !== undefined
+    hospital !== undefined
   ) {
 
     const sequenceMapping = {
@@ -57,7 +57,7 @@ function storeData(
       overallVerdict: overallVerdict,
       duration: timer,
       username: username,
-      password: password,
+      hospital: hospital,
       Date: formattedDate,
       Time: formattedTime
     };

@@ -16,21 +16,24 @@ with a lung disease qualifies for a lung transplant. It records each assessment
 
 ---
 
-## 2. Authentication (`src/components/Login/LoginPage.js`)
+## 2. Details Gate (`src/components/Login/LoginPage.js`)
+
+There is no authentication. This screen just collects who is using the
+tool before letting them in.
 
 ### Rules
-- Any non-empty string is a valid username.
-- The password is hardcoded: `LT@1234`. Any other value is rejected.
-- On success, `onLogin(username, password)` is called, which sets `loggedIn = true`
-  in `App.js` and stores `{ username, password }` into `UserContext`.
-- On failure, the error message `"Invalid username or password!"` is displayed.
-- The error clears as soon as the user starts typing in the password field.
-- Pressing **Enter** anywhere inside the login form triggers login (via `onKeyDown`).
-- There is no session persistence — refreshing the page returns to the login screen.
+- Any non-empty string is a valid name; any non-empty string is a valid
+  hospital name. Both fields are required.
+- On success, `onLogin(username, hospital)` is called, which moves `App.js`'s
+  `view` state to `"app"` and stores `{ username, hospital }` into `UserContext`.
+- On failure (either field empty), the error message
+  `"Please enter your name and hospital name!"` is displayed.
+- The error clears as soon as the user starts typing in either field.
+- Pressing **Enter** anywhere inside the form triggers submission (via `onKeyDown`).
+- There is no session persistence — refreshing the page returns to the landing screen.
 
 ### Do not change
-- The password validation condition (`password === "LT@1234"`).
-- The `onLogin(username, password)` call signature.
+- The `onLogin(username, hospital)` call signature.
 - The Enter-key shortcut behaviour.
 
 ---
@@ -216,7 +219,7 @@ It fires **only when** `isFinalCardShown === true` AND `timer !== 0`.
   "overallVerdict": "Eligible" | "Ineligible",
   "duration":       <number in seconds>,
   "username":       "<string>",
-  "password":       "<string>",
+  "hospital":       "<string>",
   "Date":           "<DD/MM/YYYY>",
   "Time":           "<HH:MM:SS>"
 }
@@ -238,8 +241,8 @@ It fires **only when** `isFinalCardShown === true` AND `timer !== 0`.
 
 ## 13. User Context (`src/components/UserContext.js`)
 
-A React context providing `{ username, password, setUserDetails }`.
-Created in `App.js` and consumed in `MainCard.js` to pass credentials to `storeData`.
+A React context providing `{ username, hospital, setUserDetails }`.
+Created in `App.js` and consumed in `MainCard.js` to pass the submitter's details to `storeData`.
 
 ---
 

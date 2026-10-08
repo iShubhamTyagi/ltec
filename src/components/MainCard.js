@@ -31,7 +31,7 @@ function MainCard({ onHome }) {
   const [currentVerdicts, setCurrentVerdicts] = useState({});
   const [overallVerdict, setOverallVerdict] = useState({});
   const [timer, setTimer] = useState(0);
-  const { username, password } = useContext(UserContext);
+  const { username, hospital } = useContext(UserContext);
 
   const {
     selectedSequence,
@@ -157,7 +157,7 @@ function MainCard({ onHome }) {
         overallVerdict,
         timer,
         username,
-        password
+        hospital
       );
     }
     // eslint-disable-next-line

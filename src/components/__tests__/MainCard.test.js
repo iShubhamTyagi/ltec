@@ -7,7 +7,7 @@ import { UserContext } from '../UserContext';
 // Prevent actual network calls
 jest.mock('../DataStorage', () => jest.fn());
 
-const CTX = { username: 'dr.test', password: 'LT@1234', setUserDetails: jest.fn() };
+const CTX = { username: 'dr.test', hospital: 'City Hospital', setUserDetails: jest.fn() };
 
 function renderMainCard() {
   return render(
